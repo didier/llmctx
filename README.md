@@ -12,12 +12,12 @@ llmctx transforms technical documentation into AI-ready formats. It provides a s
 ### Adding presets
 To add a new preset:
 
-1. Fork the [llmctx repository](https://github.com/didiercatz/llmctx) on GitHub.
+1. Fork this repo.
 2. Open the `src/lib/presets.ts` file.
 3. Add a new entry to the `presets` object with the following structure:
 
-   ```typescript
-   [presetName]: {
+   ```ts
+   [presetKey]: {
      title: 'Preset Title',
      owner: 'github-owner',
      repo: 'github-repo',
