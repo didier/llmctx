@@ -49,6 +49,7 @@
 					<a href="/{preset.key}">{preset.title}</a>
 				</li>
 			{/each}
+			<li><a target="_blank" href="https://github.com/didier/llmctx">Add your own...</a></li>
 		</ul>
 	</section>
 
@@ -63,8 +64,7 @@
 
 	<br />
 	<footer>
-		A project by <a href="https://twitter.com/didiercatz">Didier Catz</a>. Want your documentation
-		to be included in this list? Let me know.
+		A project by <a href="https://twitter.com/didiercatz">Didier Catz</a>.
 	</footer>
 </main>
 
