@@ -6,24 +6,38 @@
 			.map(([key, value]) => ({ key: key.toLowerCase(), title: value.title }))
 			.sort()
 	)
+
+	const instructions = [
+		{
+			title: 'Cursor',
+			description: `Cursor supports adding context via URL using the <a href="https://docs.cursor.com/context/@-symbols/@-link#paste-links">Paste Links</a> feature.`,
+			command: '@https://llmctx.com/[preset]'
+		},
+		{
+			title: 'Zed',
+			description:
+				'You can use llmctx directly in Zed using a <a href="https://zed.dev/docs/assistant/commands">/fetch command</a>.',
+			command: '/fetch https://llmctx.com/[preset]'
+		}
+	]
 </script>
 
 <main>
 	<article>
-		<div class="mb-[2em] text-xl">llmctx.com</div>
-		<h1 class="mb-[2em] text-3xl">Developer documentation in an LLM-ready format</h1>
+		<div>llmctx.com</div>
+		<h1>Developer documentation in an LLM-ready format</h1>
 
-		<p class="mb-[2em] text-lg">
+		<p>
 			llmctx.com transforms docs into LLM-friendly formats. Pick a preset, get AI-ready context.
 			Perfect for coding with AI assistants like Cursor or Zed.
 		</p>
 	</article>
 
 	<section>
-		<p class="mb-[2em] text-base">
+		<p>
 			<code>https://llmctx.com/</code><code>[preset]</code>
 		</p>
-		<h2 class="mb-[1em] text-lg">Currently supported presets:</h2>
+		<h2>Currently supported presets:</h2>
 		<ul>
 			{#each presets as preset}
 				<li>
@@ -33,6 +47,16 @@
 		</ul>
 	</section>
 
+	<br />
+	{#each instructions as { title, description, command }}
+		<details>
+			<summary>{title}</summary>
+			<p>{@html description}</p>
+			<pre><code>{command}</code></pre>
+		</details>
+	{/each}
+
+	<br />
 	<footer>
 		A project by <a href="https://twitter.com/didiercatz">Didier Catz</a>. Want your documentation
 		to be included in this list? Let me know.
