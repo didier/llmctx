@@ -1,8 +1,8 @@
 import { Octokit } from '@octokit/rest'
-import { PERSONAL_GITHUB_TOKEN } from '$env/static/private'
+import { GITHUB_TOKEN_TOKEN } from '$env/static/private'
 import { presets } from './presets'
 
-const octokit = new Octokit({ auth: PERSONAL_GITHUB_TOKEN })
+const octokit = new Octokit({ auth: GITHUB_TOKEN_TOKEN })
 
 export async function checkForNewReleases() {
 	for (const [presetName, preset] of Object.entries(presets)) {
