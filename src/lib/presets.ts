@@ -1,3 +1,5 @@
+import type { GlobPattern } from 'glob'
+
 export type PresetConfig = {
 	/** The pretty title of the preset */
 	title: string
@@ -5,10 +7,8 @@ export type PresetConfig = {
 	owner: string
 	/** The name of the GitHub repository */
 	repo: string
-	/** The path within the repository to search for files */
-	path: string
-	/** List of allowed file or directory names */
-	allowList: string[]
+	/** List of glob patterns for including and excluding files */
+	glob: GlobPattern[]
 	/** Optional prompt to provide additional context or instructions to language models */
 	prompt?: string
 }
@@ -18,22 +18,19 @@ export const presets: Record<string, PresetConfig> = {
 		title: 'Svelte',
 		owner: 'sveltejs',
 		repo: 'svelte',
-		path: 'documentation',
-		allowList: ['docs'],
+		glob: ['**/documentation/docs/**/*.md'],
 		prompt: 'Always use Svelte 5 runes. Runes do not need to be imported, they are globals.'
 	},
 	sveltekit: {
 		title: 'SvelteKit',
 		owner: 'sveltejs',
 		repo: 'kit',
-		path: 'documentation',
-		allowList: ['docs']
+		glob: ['**/documentation/docs/**/*.md']
 	},
-	supabase: {
+	'supabase-js': {
 		title: 'Supabase',
 		owner: 'supabase',
 		repo: 'supabase',
-		path: 'apps/docs',
-		allowList: ['content']
+		glob: ['**/apps/docs/spec/**/supabase_js_v2.{md,mdx,yaml,yml}']
 	}
 }
