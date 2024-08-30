@@ -28,5 +28,12 @@ export const presets: Record<string, PresetConfig> = {
 		repo: 'kit',
 		path: 'documentation',
 		allowList: ['docs']
+	},
+	supabase: {
+		title: 'Supabase',
+		owner: 'supabase',
+		repo: 'supabase',
+		path: 'apps/docs',
+		allowList: ['content']
 	}
 }

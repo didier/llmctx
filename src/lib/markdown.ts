@@ -1,7 +1,9 @@
 import type { PresetConfig } from '$lib/presets'
 import { fetchAndProcessMarkdown } from '$lib/fetchMarkdown'
+import { dev } from '$app/environment'
 
-const CACHE_DURATION = 24 * 60 * 60 * 1000 // 24 hours in milliseconds
+const ONE_DAY = 24 * 60 * 60 * 1000 // 24 hours in milliseconds
+const CACHE_DURATION = dev ? 0 : ONE_DAY // 24 hours in milliseconds
 
 const cache: { [key: string]: { content: string; timestamp: number } } = {}
 
