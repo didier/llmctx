@@ -4,5 +4,15 @@
 			"path": "/api/trigger-rebuild",
 			"schedule": "0 0 * * *"
 		}
+	],
+	"rewrites": [
+		{
+			"source": "/metrics/metrics.js",
+			"destination": "https://plausible.io/js/script.tagged-events.outbound-links.js"
+		},
+		{
+			"source": "/metrics/api/event",
+			"destination": "https://plausible.io/api/event"
+		}
 	]
 }
