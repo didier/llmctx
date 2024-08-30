@@ -9,7 +9,12 @@ export const GET: RequestHandler = async ({ params }) => {
 	if (preset in presets) {
 		try {
 			const content = await getCachedOrFetchMarkdown(presets[preset])
-			return new Response(content, {
+
+			const response = presets[preset].prompt
+				? `${content}\n\nInstructions for LLMs: <SYSTEM>${presets[preset].prompt}</SYSTEM>`
+				: content
+
+			return new Response(response, {
 				status: 200,
 				headers: { 'Content-Type': 'text/plain; charset=utf-8' }
 			})
