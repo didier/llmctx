@@ -1,61 +1,81 @@
-import type { PresetConfig } from '$lib/presets';
-import simpleGit from 'simple-git';
-import { promises as fs } from 'fs';
-import path from 'path';
+import type { Preset } from '$lib/presets'
+import { PERSONAL_GITHUB_TOKEN } from '$env/static/private'
+import tarStream from 'tar-stream'
+import { Readable } from 'stream'
+import { createGunzip } from 'zlib'
 
-export async function fetchAndProcessMarkdown(preset: PresetConfig): Promise<string> {
-    const { owner, repo, path: subPath, allowList } = preset;
-    const tempDir = path.join(process.cwd(), 'temp', `${owner}-${repo}`);
-
-    await cleanDirectory(tempDir);
-    await cloneRepo(owner, repo, tempDir);
-
-    const files = await findMarkdownFiles(path.join(tempDir, subPath), allowList);
-    const contents = await Promise.all(files.map(file => fs.readFile(file, 'utf-8')));
-    const processedContent = contents.map(minimizeContent).join(' ');
-
-    await cleanDirectory(tempDir);
-    return processedContent;
+// Main function to fetch and process markdown files
+export async function fetchAndProcessMarkdown(preset: Preset): Promise<string> {
+	const { owner, repo, path, allowList } = preset
+	const files = await fetchMarkdownFiles(owner, repo, path, allowList)
+	return files.join(' ')
 }
 
-async function cleanDirectory(dir: string) {
-    try {
-        await fs.rm(dir, { recursive: true, force: true });
-    } catch (error) {
-        if (error.code !== 'ENOENT') {
-            console.error(`Error cleaning directory: ${error.message}`);
-        }
-    }
+// Fetch markdown files using GitHub's tarball API
+async function fetchMarkdownFiles(
+	owner: string,
+	repo: string,
+	path: string,
+	allowList: string[]
+): Promise<string[]> {
+	// Construct the tarball URL
+	const url = `https://api.github.com/repos/${owner}/${repo}/tarball`
+
+	// Fetch the tarball
+	const response = await fetch(url, {
+		headers: {
+			Authorization: `Bearer ${PERSONAL_GITHUB_TOKEN}`,
+			Accept: 'application/vnd.github.v3.raw'
+		}
+	})
+
+	if (!response.ok) {
+		throw new Error(`Failed to fetch tarball: ${response.statusText}`)
+	}
+
+	const contents: string[] = []
+	const extractStream = tarStream.extract()
+
+	// Process each file in the tarball
+	extractStream.on('entry', (header, stream, next) => {
+		if (
+			header.type === 'file' &&
+			header.name.endsWith('.md') &&
+			allowList.some((allowed) => header.name.includes(allowed))
+		) {
+			let content = ''
+			stream.on('data', (chunk) => (content += chunk.toString()))
+			stream.on('end', () => {
+				contents.push(minimizeContent(content))
+				next()
+			})
+		} else {
+			stream.resume()
+			next()
+		}
+	})
+
+	// Create a readable stream from the response body
+	const tarballStream = Readable.from(response.body)
+
+	// Create a gunzip stream
+	const gunzipStream = createGunzip()
+
+	// Pipe the tarball stream through gunzip to the extract stream
+	tarballStream.pipe(gunzipStream).pipe(extractStream)
+
+	// Wait for the extraction to complete
+	await new Promise<void>((resolve) => extractStream.on('finish', resolve))
+
+	return contents
 }
 
-async function cloneRepo(owner: string, repo: string, dir: string) {
-    const git = simpleGit();
-    await git.clone(`https://github.com/${owner}/${repo}.git`, dir);
-}
-
-async function findMarkdownFiles(dir: string, allowList: string[]): Promise<string[]> {
-    const entries = await fs.readdir(dir, { withFileTypes: true });
-    const files = await Promise.all(entries.map(async (entry) => {
-        const fullPath = path.resolve(dir, entry.name);
-        const relativePath = path.relative(dir, fullPath);
-        
-        if (allowList.some(allowed => relativePath.startsWith(allowed))) {
-            if (entry.isDirectory()) {
-                return findMarkdownFiles(fullPath, allowList);
-            } else if (entry.isFile() && fullPath.endsWith('.md')) {
-                return [fullPath];
-            }
-        }
-        return [];
-    }));
-    return files.flat();
-}
-
+// Minimize the content of a markdown file
 function minimizeContent(content: string): string {
-    return content
-        .replace(/\s+/g, ' ')
-        .replace(/```[\s\S]*?```/g, '')
-        .replace(/\[.*?\]/g, '')
-        .replace(/\(.*?\)/g, '')
-        .trim();
+	return content
+		.replace(/\s+/g, ' ')
+		.replace(/```[\s\S]*?```/g, '')
+		.replace(/\[.*?\]/g, '')
+		.replace(/\(.*?\)/g, '')
+		.trim()
 }
