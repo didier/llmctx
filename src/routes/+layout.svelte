@@ -1,5 +1,5 @@
 <script lang="ts">
-	import '../app.css'
+	// import '../app.css'
 
 	// Types
 	import type { PageData } from './$types'
@@ -10,7 +10,7 @@
 		children: Snippet
 	}
 
-	let { data, children }: Props = $props()
+	let { children }: Props = $props()
 </script>
 
 <div class="container mx-auto">

@@ -34,6 +34,26 @@
 		--ring: 20 14.3% 4.1%;
 
 		--radius: 0.5rem;
+
+		/* Typography */
+
+		--font-sans: Inter;
+
+		font-feature-settings:
+			'liga' 1,
+			'calt' 1,
+			'ss01' 1,
+			'ss03' 1,
+			'ss08' 1,
+			'cv09' 1,
+			'cv10' 1,
+			'case' 1;
+
+		@supports (font-variation-settings: normal) {
+			--font-sans: InterVariable;
+
+			font-optical-sizing: auto;
+		}
 	}
 
 	.dark {

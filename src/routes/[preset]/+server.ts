@@ -1,5 +1,5 @@
 import type { RequestHandler } from './$types'
-import { json } from '@sveltejs/kit'
+import { error, json } from '@sveltejs/kit'
 import { presets } from '$lib/presets'
 import { getCachedOrFetchMarkdown } from '$lib/markdown'
 
@@ -18,13 +18,13 @@ export const GET: RequestHandler = async ({ params }) => {
 				status: 200,
 				headers: { 'Content-Type': 'text/plain; charset=utf-8' }
 			})
-		} catch (error) {
-			console.error(`Error fetching documentation for ${preset}:`, error)
-			return json({ error: `Failed to fetch documentation for ${preset}` }, { status: 500 })
+		} catch (e) {
+			console.error(`Error fetching documentation for ${preset}:`, e)
+			error(500, `Failed to fetch documentation for "${preset}"`)
 		}
 	}
 
-	return json({ error: 'Invalid preset' }, { status: 400 })
+	error(400, `Invalid preset: "${preset}"`)
 }
 
 export function entries() {

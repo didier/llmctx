@@ -1,4 +1,6 @@
 export type PresetConfig = {
+	/** The pretty title of the preset */
+	title: string
 	/** The owner of the GitHub repository */
 	owner: string
 	/** The name of the GitHub repository */
@@ -13,10 +15,18 @@ export type PresetConfig = {
 
 export const presets: Record<string, PresetConfig> = {
 	svelte: {
+		title: 'Svelte',
 		owner: 'sveltejs',
 		repo: 'svelte',
 		path: 'documentation',
 		allowList: ['docs'],
 		prompt: 'Always use Svelte 5 runes. Runes do not need to be imported, they are globals.'
+	},
+	sveltekit: {
+		title: 'SvelteKit',
+		owner: 'sveltejs',
+		repo: 'kit',
+		path: 'documentation',
+		allowList: ['docs']
 	}
 }

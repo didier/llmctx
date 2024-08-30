@@ -55,7 +55,65 @@ const config: Config = {
 				sm: 'calc(var(--radius) - 4px)'
 			},
 			fontFamily: {
-				sans: [...fontFamily.sans]
+				sans: ['var(--font-sans)', ...fontFamily.sans]
+			},
+			fontSize: {
+				xs: [
+					'0.6875rem',
+					{
+						lineHeight: 'calc(2px + 2ex + 2px)',
+						letterSpacing: '0.005em',
+						fontWeight: '500'
+					}
+				],
+				sm: [
+					'0.75rem',
+					{
+						lineHeight: 'calc(2px + 2ex + 2px)',
+						letterSpacing: '0em',
+						fontWeight: '500'
+					}
+				],
+				base: [
+					'1rem',
+					{
+						lineHeight: 'calc(2px + 2ex + 2px)',
+						letterSpacing: '-0.011em',
+						fontWeight: '500'
+					}
+				],
+				lg: [
+					'1.3125rem',
+					{
+						lineHeight: 'calc(2px + 2ex + 2px)',
+						letterSpacing: '-0.018em',
+						fontWeight: '500'
+					}
+				],
+				xl: [
+					'1.6875rem',
+					{
+						lineHeight: 'calc(2px + 2ex + 2px)',
+						letterSpacing: '-0.021em',
+						fontWeight: '500'
+					}
+				],
+				'2xl': [
+					'2.1875rem',
+					{
+						lineHeight: 'calc(2px + 2ex + 2px)',
+						letterSpacing: '-0.022em',
+						fontWeight: '700'
+					}
+				],
+				'3xl': [
+					'2.875rem',
+					{
+						lineHeight: 'calc(2px + 2ex + 2px)',
+						letterSpacing: '-0.022em',
+						fontWeight: '700'
+					}
+				]
 			}
 		}
 	}
