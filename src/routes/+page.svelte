@@ -18,6 +18,11 @@
 			description:
 				'You can use llmctx directly in Zed using a <a href="https://zed.dev/docs/assistant/commands">/fetch command</a>.',
 			command: '/fetch https://llmctx.com/[preset]'
+		},
+		{
+			title: 'cURL',
+			description: `Let's be real—if you clicked this, you probably already know how to use cURL. But if you don't, here's a quick example:`,
+			command: 'curl https://llmctx.com/[preset] -o context.txt'
 		}
 	]
 </script>
