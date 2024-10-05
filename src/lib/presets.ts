@@ -63,6 +63,11 @@ export const presets: Record<string, PresetConfig> = {
 		owner: 'markjaquith',
 		repo: 'clerk-sveltekit',
 		glob: ['**/README.md']
-	}
-	
+	},
+	'shadcn-svelte': {
+		title: 'shadcn/ui, but for Svelte',
+		owner: 'huntabyte',
+		repo: 'shadcn-svelte',
+		glob: ['**/sites/docs/src/content/**/*.md']
+	}	
 }
