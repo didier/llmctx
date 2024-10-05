@@ -45,5 +45,24 @@ export const presets: Record<string, PresetConfig> = {
 		repo: 'effect',
 		glob: ['**/packages/schema/README.md'],
 		prompt: 'All Schema functions are now denoted with uppercase (Struct, String, Number etc.)'
+	},
+	'triplit': {
+		title: 'Triplit.dev (client-side/realtime db)',
+		owner: 'aspen-cloud',
+		repo: 'triplit',
+		glob: ['**/packages/docs/src/pages/**/*.mdx']
+	},
+	'instantdb': {
+		title: 'InstantDB (client-side/realtime db)',
+		owner: 'instantdb',
+		repo: 'instant',
+		glob: ['**/client/www/pages/docs/**/*.md']
+	},
+	'clerk-sveltkit': {
+		title: 'Clerk adapter for SvelteKit',
+		owner: 'markjaquith',
+		repo: 'clerk-sveltekit',
+		glob: ['**/README.md']
 	}
+	
 }
