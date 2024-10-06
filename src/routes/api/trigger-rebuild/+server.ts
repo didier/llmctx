@@ -1,4 +1,7 @@
+// Types
 import type { RequestHandler } from './$types'
+
+// Env
 import { VERCEL_DEPLOY_HOOK_URL } from '$env/static/private'
 
 export const GET: RequestHandler = async () => {

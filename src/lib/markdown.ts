@@ -1,4 +1,7 @@
+// Types
 import type { PresetConfig } from '$lib/presets'
+
+// Utils
 import { fetchAndProcessMarkdown } from '$lib/fetchMarkdown'
 import { dev } from '$app/environment'
 
