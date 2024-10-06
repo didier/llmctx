@@ -33,27 +33,27 @@ export const presets: Record<string, PresetConfig> = {
 		repo: 'supabase',
 		glob: ['**/apps/docs/spec/**/supabase_js_v2.{md,mdx,yaml,yml}']
 	},
-	'effect': {
+	effect: {
 		title: 'effect',
 		owner: 'Effect-TS',
 		repo: 'website',
 		glob: ['**/content/docs/**/*.md', '**/content/docs/**/*.mdx']
 	},
-	'effect_schema': {
+	effect_schema: {
 		title: '@effect/schema',
 		owner: 'Effect-TS',
 		repo: 'effect',
 		glob: ['**/packages/schema/README.md'],
 		prompt: 'All Schema functions are now denoted with uppercase (Struct, String, Number etc.)'
 	},
-	'triplit': {
-		title: 'Triplit.dev (client-side/realtime db)',
+	triplit: {
+		title: 'Triplit.dev',
 		owner: 'aspen-cloud',
 		repo: 'triplit',
 		glob: ['**/packages/docs/src/pages/**/*.mdx']
 	},
-	'instantdb': {
-		title: 'InstantDB (client-side/realtime db)',
+	instantdb: {
+		title: 'InstantDB',
 		owner: 'instantdb',
 		repo: 'instant',
 		glob: ['**/client/www/pages/docs/**/*.md']
@@ -65,9 +65,9 @@ export const presets: Record<string, PresetConfig> = {
 		glob: ['**/README.md']
 	},
 	'shadcn-svelte': {
-		title: 'shadcn/ui, but for Svelte',
+		title: 'shadcn/ui for Svelte',
 		owner: 'huntabyte',
 		repo: 'shadcn-svelte',
 		glob: ['**/sites/docs/src/content/**/*.md']
-	}	
+	}
 }
