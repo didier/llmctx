@@ -8,48 +8,59 @@ import { getCachedOrFetchMarkdown } from '$lib/markdown'
 import { dev } from '$app/environment'
 
 export const GET: RequestHandler = async ({ params }) => {
-	const { preset } = params
+	const presetNames = params.preset.split(',').map((p) => p.trim())
 
 	if (dev) {
-		console.log(`Received request for preset: ${preset}`)
+		console.log(`Received request for presets: ${presetNames.join(', ')}`)
 	}
 
-	if (preset in presets) {
-		try {
+	// Validate all preset names first
+	const invalidPresets = presetNames.filter((name) => !(name in presets))
+	if (invalidPresets.length > 0) {
+		error(400, `Invalid preset(s): "${invalidPresets.join('", "')}"`)
+	}
+
+	try {
+		// Fetch all contents in parallel
+		const contentPromises = presetNames.map(async (presetName) => {
 			if (dev) {
-				console.time(`Fetching markdown for ${preset}`)
+				console.time(`Fetching markdown for ${presetName}`)
 			}
 
-			const content = await getCachedOrFetchMarkdown(presets[preset])
+			const content = await getCachedOrFetchMarkdown(presets[presetName])
 
 			if (dev) {
-				console.timeEnd(`Fetching markdown for ${preset}`)
-				console.log(`Content length for ${preset}: ${content.length}`)
+				console.timeEnd(`Fetching markdown for ${presetName}`)
+				console.log(`Content length for ${presetName}: ${content.length}`)
 			}
 
 			if (content.length === 0) {
-				throw new Error(`No content found for ${preset}`)
+				throw new Error(`No content found for ${presetName}`)
 			}
 
-			const response = presets[preset].prompt
-				? `${content}\n\nInstructions for LLMs: <SYSTEM>${presets[preset].prompt}</SYSTEM>`
+			// Add the prompt if it exists
+			return presets[presetName].prompt
+				? `${content}\n\nInstructions for LLMs: <SYSTEM>${presets[presetName].prompt}</SYSTEM>`
 				: content
+		})
 
-			if (dev) {
-				console.log(`Final response length for ${preset}: ${response.length}`)
-			}
+		const contents = await Promise.all(contentPromises)
 
-			return new Response(response, {
-				status: 200,
-				headers: { 'Content-Type': 'text/plain; charset=utf-8' }
-			})
-		} catch (e) {
-			console.error(`Error fetching documentation for ${preset}:`, e)
-			error(500, `Failed to fetch documentation for "${preset}"`)
+		// Join all contents with a delimiter
+		const response = contents.join('\n\n---\n\n')
+
+		if (dev) {
+			console.log(`Final combined response length: ${response.length}`)
 		}
-	}
 
-	error(400, `Invalid preset: "${preset}"`)
+		return new Response(response, {
+			status: 200,
+			headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+		})
+	} catch (e) {
+		console.error(`Error fetching documentation for presets [${presetNames.join(', ')}]:`, e)
+		error(500, `Failed to fetch documentation for presets "${presetNames.join(', ')}"`)
+	}
 }
 
 export function entries() {
