@@ -40,6 +40,6 @@ Please ensure that the documentation source is reliable and actively maintained.
 
 ## Feature requests
 
-- [ ] Combine multiple documentation sources (e.g., https://llmctx.com/svelte,sveltekit)
+- [x] Combine multiple documentation sources (e.g., https://llmctx.com/svelte,sveltekit)
 - [ ] Create a "stack" of frequently used frameworks and libraries
 - [ ] Implement a checkbox UI for selecting presets and generate custom URLs based on selected documentation
