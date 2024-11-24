@@ -6,9 +6,7 @@ llmctx transforms technical documentation into AI-ready formats. It provides a s
 - Regularly updated content from official documentation
 
 ## Supported presets
-- Svelte
-- SvelteKit
-- Supabase
+Visit [llmctx.com](https://llmctx.com) to see all presets.
 
 ### Adding presets
 To add a new preset:
