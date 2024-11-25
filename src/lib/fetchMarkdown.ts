@@ -16,7 +16,12 @@ export async function fetchAndProcessMarkdown(preset: PresetConfig): Promise<str
 }
 
 // Fetch markdown files using GitHub's tarball API
-async function fetchMarkdownFiles({ owner, repo, glob }: PresetConfig): Promise<string[]> {
+async function fetchMarkdownFiles({
+	owner,
+	repo,
+	glob,
+	minimize = undefined
+}: PresetConfig): Promise<string[]> {
 	// Construct the tarball URL
 	const url = `https://api.github.com/repos/${owner}/${repo}/tarball`
 
@@ -63,7 +68,7 @@ async function fetchMarkdownFiles({ owner, repo, glob }: PresetConfig): Promise<
 			let content = ''
 			stream.on('data', (chunk) => (content += chunk.toString()))
 			stream.on('end', () => {
-				contents.push(minimizeContent(content))
+				contents.push(minimizeContent(content, minimize))
 				if (dev) {
 					console.log(`Processed file: ${header.name}`)
 				}
@@ -95,18 +100,57 @@ async function fetchMarkdownFiles({ owner, repo, glob }: PresetConfig): Promise<
 	return contents
 }
 
-// Minimize the content of a markdown file
-function minimizeContent(content: string): string {
-	const minimized = content
-		.replace(/\s+/g, ' ')
-		// .replace(/```[\s\S]*?```/g, '')
-		.replace(/\[.*?\]/g, '')
-		.replace(/\(.*?\)/g, '')
-		.trim()
+interface MinimizeOptions {
+	normalizeWhitespace: boolean
+	removeCodeBlocks: boolean
+	removeSquareBrackets: boolean
+	removeParentheses: boolean
+	trim: boolean
+}
+
+const defaultOptions: MinimizeOptions = {
+	normalizeWhitespace: true,
+	removeCodeBlocks: true,
+	removeSquareBrackets: true,
+	removeParentheses: true,
+	trim: true
+}
+
+function minimizeContent(content: string, options?: Partial<MinimizeOptions>): string {
+	// Merge with defaults, but only for properties that are defined
+	const settings: MinimizeOptions = options ? { ...defaultOptions, ...options } : defaultOptions
+
+	let minimized = content
+
+	if (settings.normalizeWhitespace) {
+		console.log('Normalizing whitespace')
+		minimized = minimized.replace(/\s+/g, ' ')
+	}
+
+	if (settings.removeCodeBlocks) {
+		console.log('Removing code blocks')
+		minimized = minimized.replace(/```[\s\S]*?```/g, '')
+	}
+
+	if (settings.removeSquareBrackets) {
+		console.log('Removing square brackets')
+		minimized = minimized.replace(/\[.*?\]/g, '')
+	}
+
+	if (settings.removeParentheses) {
+		console.log('Removing parentheses')
+		minimized = minimized.replace(/\(.*?\)/g, '')
+	}
+
+	if (settings.trim) {
+		console.log('Trimming whitespace')
+		minimized = minimized.trim()
+	}
 
 	if (dev) {
 		console.log(`Original content length: ${content.length}`)
 		console.log(`Minimized content length: ${minimized.length}`)
+		console.log('Applied minimizations:', JSON.stringify(settings, null, 2))
 	}
 
 	return minimized
