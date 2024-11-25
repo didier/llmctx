@@ -1,6 +1,8 @@
 // Types
 import type { RequestHandler } from './$types'
 
+import { BYPASS_TOKEN } from '$env/static/private'
+
 // Utils
 import { error } from '@sveltejs/kit'
 import { presets } from '$lib/presets'
@@ -55,7 +57,9 @@ export const GET: RequestHandler = async ({ params }) => {
 
 		return new Response(response, {
 			status: 200,
-			headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+			headers: {
+				'Content-Type': 'text/plain; charset=utf-8'
+			}
 		})
 	} catch (e) {
 		console.error(`Error fetching documentation for presets [${presetNames.join(', ')}]:`, e)
@@ -63,6 +67,9 @@ export const GET: RequestHandler = async ({ params }) => {
 	}
 }
 
-export function entries() {
-	return Object.keys(presets).map((preset) => ({ preset }))
+export const config = {
+	isr: {
+		expiration: 3600,
+		bypassToken: BYPASS_TOKEN
+	}
 }
