@@ -8,8 +8,10 @@ export type PresetConfig = {
 	owner: string
 	/** The name of the GitHub repository */
 	repo: string
-	/** List of glob patterns for including and excluding files */
+	/** List of glob patterns for including files */
 	glob: GlobPattern[]
+	/** List of glob patterns for excluding files */
+	ignore?: GlobPattern[]
 	/** Optional prompt to provide additional context or instructions to language models */
 	prompt?: string
 	/** Minimization options for the content */
@@ -22,11 +24,13 @@ export const presets: Record<string, PresetConfig> = {
 		owner: 'sveltejs',
 		repo: 'svelte',
 		glob: ['**/documentation/docs/**/*.md'],
+		ignore: ['**/documentation/docs/99-legacy/**/*.md'],
 		prompt: 'Always use Svelte 5 runes. Runes do not need to be imported, they are globals.',
 		minimize: {
 			removeCodeBlocks: false,
 			removeSquareBrackets: false,
-			removeParentheses: false
+			removeParentheses: false,
+			normalizeWhitespace: false
 		}
 	},
 	sveltekit: {
