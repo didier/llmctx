@@ -1,4 +1,5 @@
 import type { GlobPattern } from 'glob'
+import type { MinimizeOptions } from './fetchMarkdown'
 
 export type PresetConfig = {
 	/** The pretty title of the preset */
@@ -11,6 +12,8 @@ export type PresetConfig = {
 	glob: GlobPattern[]
 	/** Optional prompt to provide additional context or instructions to language models */
 	prompt?: string
+	/** Minimization options for the content */
+	minimize?: MinimizeOptions
 }
 
 export const presets: Record<string, PresetConfig> = {
@@ -19,13 +22,23 @@ export const presets: Record<string, PresetConfig> = {
 		owner: 'sveltejs',
 		repo: 'svelte',
 		glob: ['**/documentation/docs/**/*.md'],
-		prompt: 'Always use Svelte 5 runes. Runes do not need to be imported, they are globals.'
+		prompt: 'Always use Svelte 5 runes. Runes do not need to be imported, they are globals.',
+		minimize: {
+			removeCodeBlocks: false,
+			removeSquareBrackets: false,
+			removeParentheses: false
+		}
 	},
 	sveltekit: {
 		title: 'SvelteKit',
 		owner: 'sveltejs',
 		repo: 'kit',
-		glob: ['**/documentation/docs/**/*.md']
+		glob: ['**/documentation/docs/**/*.md'],
+		minimize: {
+			removeCodeBlocks: false,
+			removeSquareBrackets: false,
+			removeParentheses: false
+		}
 	},
 	'supabase-js': {
 		title: 'Supabase',
