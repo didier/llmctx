@@ -22,26 +22,28 @@ export const presets: Record<string, PresetConfig> = {
 	svelte: {
 		title: 'Svelte',
 		owner: 'sveltejs',
-		repo: 'svelte',
-		glob: ['**/documentation/docs/**/*.md'],
-		ignore: ['**/documentation/docs/99-legacy/**/*.md'],
+		repo: 'svelte.dev',
+		glob: ['**/apps/svelte.dev/content/docs/svelte/**/*.md'],
+		ignore: ['**/apps/svelte.dev/content/docs/svelte/99-legacy/**/*.md'],
 		prompt: 'Always use Svelte 5 runes. Runes do not need to be imported, they are globals.',
 		minimize: {
 			removeCodeBlocks: false,
 			removeSquareBrackets: false,
 			removeParentheses: false,
-			normalizeWhitespace: false
+			normalizeWhitespace: true
 		}
 	},
 	sveltekit: {
 		title: 'SvelteKit',
 		owner: 'sveltejs',
-		repo: 'kit',
-		glob: ['**/documentation/docs/**/*.md'],
+		repo: 'svelte.dev',
+		glob: ['**/apps/svelte.dev/content/docs/kit/**/*.md'],
+		ignore: [],
 		minimize: {
 			removeCodeBlocks: false,
 			removeSquareBrackets: false,
-			removeParentheses: false
+			removeParentheses: false,
+			normalizeWhitespace: true
 		}
 	},
 	'supabase-js': {

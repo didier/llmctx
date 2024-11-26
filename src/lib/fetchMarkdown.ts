@@ -132,27 +132,27 @@ function minimizeContent(content: string, options?: Partial<MinimizeOptions>): s
 	let minimized = content
 
 	if (settings.normalizeWhitespace) {
-		console.log('Normalizing whitespace')
+		//console.log('Normalizing whitespace')
 		minimized = minimized.replace(/\s+/g, ' ')
 	}
 
 	if (settings.removeCodeBlocks) {
-		console.log('Removing code blocks')
+		//console.log('Removing code blocks')
 		minimized = minimized.replace(/```[\s\S]*?```/g, '')
 	}
 
 	if (settings.removeSquareBrackets) {
-		console.log('Removing square brackets')
+		//console.log('Removing square brackets')
 		minimized = minimized.replace(/\[.*?\]/g, '')
 	}
 
 	if (settings.removeParentheses) {
-		console.log('Removing parentheses')
+		//console.log('Removing parentheses')
 		minimized = minimized.replace(/\(.*?\)/g, '')
 	}
 
 	if (settings.trim) {
-		console.log('Trimming whitespace')
+		//console.log('Trimming whitespace')
 		minimized = minimized.trim()
 	}
 
