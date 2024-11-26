@@ -67,7 +67,7 @@ export const presets: Record<string, PresetConfig> = {
 		glob: ['**/apps/svelte.dev/content/docs/kit/**/*.md'],
 		ignore: [],
 		minimize: {
-			removeCodeBlocks: false,
+			removeCodeBlocks: true,
 			removeSquareBrackets: false,
 			removeParentheses: false,
 			normalizeWhitespace: true
