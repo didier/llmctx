@@ -33,8 +33,35 @@ export const presets: Record<string, PresetConfig> = {
 			normalizeWhitespace: true
 		}
 	},
+	'svelte-small': {
+		title: 'Svelte (Small)',
+		owner: 'sveltejs',
+		repo: 'svelte.dev',
+		glob: ['**/apps/svelte.dev/content/docs/svelte/**/*.md'],
+		ignore: ['**/apps/svelte.dev/content/docs/svelte/99-legacy/**/*.md'],
+		prompt: 'Always use Svelte 5 runes. Runes do not need to be imported, they are globals.',
+		minimize: {
+			removeCodeBlocks: true,
+			removeSquareBrackets: false,
+			removeParentheses: false,
+			normalizeWhitespace: true
+		}
+	},
 	sveltekit: {
 		title: 'SvelteKit',
+		owner: 'sveltejs',
+		repo: 'svelte.dev',
+		glob: ['**/apps/svelte.dev/content/docs/kit/**/*.md'],
+		ignore: [],
+		minimize: {
+			removeCodeBlocks: false,
+			removeSquareBrackets: false,
+			removeParentheses: false,
+			normalizeWhitespace: true
+		}
+	},
+	'sveltekit-small': {
+		title: 'SvelteKit (Small)',
 		owner: 'sveltejs',
 		repo: 'svelte.dev',
 		glob: ['**/apps/svelte.dev/content/docs/kit/**/*.md'],
