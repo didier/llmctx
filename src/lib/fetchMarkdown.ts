@@ -15,11 +15,23 @@ export async function fetchAndProcessMarkdown(preset: PresetConfig): Promise<str
 	return files.join(' ')
 }
 
+function shouldIncludeFile(filename: string, glob: string[], ignore: string[] = []): boolean {
+	// First check if the file should be ignored
+	const shouldIgnore = ignore.some((pattern) => minimatch(filename, pattern))
+	if (shouldIgnore) {
+		return false
+	}
+
+	// Then check if the file matches include patterns
+	return glob.some((pattern) => minimatch(filename, pattern))
+}
+
 // Fetch markdown files using GitHub's tarball API
 async function fetchMarkdownFiles({
 	owner,
 	repo,
 	glob,
+	ignore = [],
 	minimize = undefined
 }: PresetConfig): Promise<string[]> {
 	// Construct the tarball URL
@@ -50,16 +62,13 @@ async function fetchMarkdownFiles({
 	// Process each file in the tarball
 	extractStream.on('entry', (header, stream, next) => {
 		processedFiles++
-		const isAllowed = glob.some((pattern) => {
-			const isNegated = pattern.startsWith('!')
-			const matchPattern = isNegated ? pattern.slice(1) : pattern
-			const matches = minimatch(header.name, matchPattern)
-			return isNegated ? !matches : matches
-		})
+		const isAllowed = shouldIncludeFile(header.name, glob, ignore)
 
 		if (dev) {
 			if (isAllowed) {
 				console.info(`Allowed file: ${header.name}`)
+			} else if (ignore?.some((pattern) => minimatch(header.name, pattern))) {
+				console.info(`Ignored file: ${header.name}`)
 			}
 		}
 
@@ -100,12 +109,12 @@ async function fetchMarkdownFiles({
 	return contents
 }
 
-interface MinimizeOptions {
-	normalizeWhitespace: boolean
-	removeCodeBlocks: boolean
-	removeSquareBrackets: boolean
-	removeParentheses: boolean
-	trim: boolean
+export interface MinimizeOptions {
+	normalizeWhitespace?: boolean
+	removeCodeBlocks?: boolean
+	removeSquareBrackets?: boolean
+	removeParentheses?: boolean
+	trim?: boolean
 }
 
 const defaultOptions: MinimizeOptions = {
@@ -123,34 +132,34 @@ function minimizeContent(content: string, options?: Partial<MinimizeOptions>): s
 	let minimized = content
 
 	if (settings.normalizeWhitespace) {
-		console.log('Normalizing whitespace')
+		//console.log('Normalizing whitespace')
 		minimized = minimized.replace(/\s+/g, ' ')
 	}
 
 	if (settings.removeCodeBlocks) {
-		console.log('Removing code blocks')
+		//console.log('Removing code blocks')
 		minimized = minimized.replace(/```[\s\S]*?```/g, '')
 	}
 
 	if (settings.removeSquareBrackets) {
-		console.log('Removing square brackets')
+		//console.log('Removing square brackets')
 		minimized = minimized.replace(/\[.*?\]/g, '')
 	}
 
 	if (settings.removeParentheses) {
-		console.log('Removing parentheses')
+		//console.log('Removing parentheses')
 		minimized = minimized.replace(/\(.*?\)/g, '')
 	}
 
 	if (settings.trim) {
-		console.log('Trimming whitespace')
+		//console.log('Trimming whitespace')
 		minimized = minimized.trim()
 	}
 
 	if (dev) {
 		console.log(`Original content length: ${content.length}`)
 		console.log(`Minimized content length: ${minimized.length}`)
-		console.log('Applied minimizations:', JSON.stringify(settings, null, 2))
+		console.log('Applied minimizations:', Object.keys(settings).join(', '))
 	}
 
 	return minimized

@@ -34,7 +34,10 @@
 
 		<p>
 			llmctx.com transforms docs into LLM-friendly formats. Pick a preset, get AI-ready context.
-			Perfect for coding with AI assistants like Cursor or Zed.
+			Perfect for coding with AI assistants like Cursor or Zed, or uploading to Claude Projects.
+		</p>
+		<p>
+			<em>"Small" versions have reduced file size, but some documentation content is omitted.</em>
 		</p>
 	</article>
 
