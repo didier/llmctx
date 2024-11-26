@@ -46,6 +46,19 @@ export const presets: Record<string, PresetConfig> = {
 			normalizeWhitespace: true
 		}
 	},
+	'svelte-cli': {
+		title: 'Svelte CLI (npx sv)',
+		owner: 'sveltejs',
+		repo: 'svelte.dev',
+		glob: ['**/apps/svelte.dev/content/docs/cli/**/*.md'],
+		ignore: [],
+		minimize: {
+			removeCodeBlocks: false,
+			removeSquareBrackets: false,
+			removeParentheses: false,
+			normalizeWhitespace: false
+		}
+	},
 	'supabase-js': {
 		title: 'Supabase',
 		owner: 'supabase',
