@@ -36,9 +36,9 @@
 		<h1>Developer documentation for Svelte in an LLM-ready format</h1>
 
 		<p>
-			This side provides documentation in an LLM-friendly format. Pick a preset, get AI-ready
-			context. Perfect for coding with AI assistants like Cursor or Zed, or uploading to Claude
-			Projects.
+			This side provides Svelte 5 and SvelteKit documentation in an LLM-friendly format. Pick a
+			preset, get AI-ready context. Perfect for coding with AI assistants like Cursor or Zed, or
+			uploading to Claude Projects.
 		</p>
 		<p>
 			Documentation is automatically fetched from the official documentation source on GitHub and
@@ -72,6 +72,8 @@
 					{/if}
 				</li>
 			{/each}
+
+			<li>Svelte 4 (Legacy, Coming soon)</li>
 		</ul>
 	</section>
 
@@ -87,7 +89,7 @@
 	<br />
 	<footer>
 		Maintained by <a href="https://khromov.se" target="_blank">Stanislav Khromov</a>. Forked from
-		<a href="https://twitter.com/didiercatz">Didier Catz</a>.
+		<a target="_blank" href="https://twitter.com/didiercatz">Didier Catz</a>.
 	</footer>
 </main>
 
