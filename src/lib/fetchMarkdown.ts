@@ -1,5 +1,5 @@
 import type { PresetConfig } from '$lib/presets'
-import { GITHUB_TOKEN } from '$env/static/private'
+import { env } from '$env/dynamic/private'
 import { dev } from '$app/environment'
 import tarStream from 'tar-stream'
 import { Readable } from 'stream'
@@ -44,7 +44,7 @@ async function fetchMarkdownFiles({
 	// Fetch the tarball
 	const response = await fetch(url, {
 		headers: {
-			Authorization: `Bearer ${GITHUB_TOKEN}`,
+			Authorization: `Bearer ${env.GITHUB_TOKEN}`,
 			Accept: 'application/vnd.github.v3.raw'
 		}
 	})
