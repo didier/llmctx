@@ -137,13 +137,38 @@ export interface MinimizeOptions {
 	removeLegacy?: boolean
 	removePlaygroundLinks?: boolean
 	removePrettierIgnore?: boolean
+	removeNoteBlocks?: boolean
 }
 
 const defaultOptions: MinimizeOptions = {
 	normalizeWhitespace: false,
 	removeLegacy: false,
 	removePlaygroundLinks: false,
-	removePrettierIgnore: true
+	removePrettierIgnore: true,
+	removeNoteBlocks: false
+}
+
+function removeQuoteBlocks(content: string, blockType: string): string {
+	return content
+		.split('\n')
+		.reduce((acc: string[], line: string, index: number, lines: string[]) => {
+			// If we find a block (with or without additional text), skip it and all subsequent blockquote lines
+			if (line.trim().startsWith(`> [!${blockType}]`)) {
+				// Skip all subsequent lines that are part of the blockquote
+				let i = index
+				while (i < lines.length && (lines[i].startsWith('>') || lines[i].trim() === '')) {
+					i++
+				}
+				// Update the index to skip all these lines
+				index = i - 1
+				return acc
+			}
+
+			// Only add the line if it's not being skipped
+			acc.push(line)
+			return acc
+		}, [])
+		.join('\n')
 }
 
 function minimizeContent(content: string, options?: Partial<MinimizeOptions>): string {
@@ -153,26 +178,11 @@ function minimizeContent(content: string, options?: Partial<MinimizeOptions>): s
 	let minimized = content
 
 	if (settings.removeLegacy) {
-		minimized = minimized
-			.split('\n')
-			.reduce((acc: string[], line: string, index: number, lines: string[]) => {
-				// If we find a legacy block (with or without additional text), skip it and all subsequent blockquote lines
-				if (line.trim().startsWith('> [!LEGACY]')) {
-					// Skip all subsequent lines that are part of the blockquote
-					let i = index
-					while (i < lines.length && (lines[i].startsWith('>') || lines[i].trim() === '')) {
-						i++
-					}
-					// Update the index to skip all these lines
-					index = i - 1
-					return acc
-				}
+		minimized = removeQuoteBlocks(minimized, 'LEGACY')
+	}
 
-				// Only add the line if it's not being skipped
-				acc.push(line)
-				return acc
-			}, [])
-			.join('\n')
+	if (settings.removeNoteBlocks) {
+		minimized = removeQuoteBlocks(minimized, 'NOTE')
 	}
 
 	if (settings.removePlaygroundLinks) {

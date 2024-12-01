@@ -40,7 +40,8 @@ export const presets: Record<string, PresetConfig> = {
 		prompt: 'Always use Svelte 5 runes. Runes do not need to be imported, they are globals.',
 		minimize: {
 			removeLegacy: true,
-			removePlaygroundLinks: true
+			removePlaygroundLinks: true,
+			removeNoteBlocks: true
 		}
 	},
 	sveltekit: {
@@ -60,7 +61,8 @@ export const presets: Record<string, PresetConfig> = {
 		ignore: [],
 		minimize: {
 			removeLegacy: true,
-			removePlaygroundLinks: true
+			removePlaygroundLinks: true,
+			removeNoteBlocks: true
 		}
 	},
 	'svelte-cli': {
