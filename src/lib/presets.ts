@@ -16,6 +16,8 @@ export type PresetConfig = {
 	prompt?: string
 	/** Minimization options for the content */
 	minimize?: MinimizeOptions
+	/** Estimated size of the content in KB */
+	estimatedSizeKb?: number
 }
 
 export const presets: Record<string, PresetConfig> = {
@@ -26,6 +28,7 @@ export const presets: Record<string, PresetConfig> = {
 		glob: ['**/apps/svelte.dev/content/docs/svelte/**/*.md'],
 		ignore: ['**/apps/svelte.dev/content/docs/svelte/99-legacy/**/*.md'],
 		prompt: 'Always use Svelte 5 runes. Runes do not need to be imported, they are globals.',
+		estimatedSizeKb: 350,
 		minimize: {
 			removeCodeBlocks: false,
 			removeSquareBrackets: false,
@@ -53,6 +56,7 @@ export const presets: Record<string, PresetConfig> = {
 		repo: 'svelte.dev',
 		glob: ['**/apps/svelte.dev/content/docs/kit/**/*.md'],
 		ignore: [],
+		estimatedSizeKb: 410,
 		minimize: {
 			removeCodeBlocks: false,
 			removeSquareBrackets: false,
@@ -74,7 +78,7 @@ export const presets: Record<string, PresetConfig> = {
 		}
 	},
 	'svelte-cli': {
-		title: 'Svelte CLI (npx sv)',
+		title: 'Svelte CLI - npx sv',
 		owner: 'sveltejs',
 		repo: 'svelte.dev',
 		glob: ['**/apps/svelte.dev/content/docs/cli/**/*.md'],
@@ -85,48 +89,5 @@ export const presets: Record<string, PresetConfig> = {
 			removeParentheses: false,
 			normalizeWhitespace: false
 		}
-	},
-	'supabase-js': {
-		title: 'Supabase',
-		owner: 'supabase',
-		repo: 'supabase',
-		glob: ['**/apps/docs/spec/**/supabase_js_v2.{md,mdx,yaml,yml}']
-	},
-	effect: {
-		title: 'effect',
-		owner: 'Effect-TS',
-		repo: 'website',
-		glob: ['**/content/docs/**/*.md', '**/content/docs/**/*.mdx']
-	},
-	effect_schema: {
-		title: '@effect/schema',
-		owner: 'Effect-TS',
-		repo: 'effect',
-		glob: ['**/packages/schema/README.md'],
-		prompt: 'All Schema functions are now denoted with uppercase (Struct, String, Number etc.)'
-	},
-	triplit: {
-		title: 'Triplit.dev',
-		owner: 'aspen-cloud',
-		repo: 'triplit',
-		glob: ['**/packages/docs/src/pages/**/*.mdx']
-	},
-	instantdb: {
-		title: 'InstantDB',
-		owner: 'instantdb',
-		repo: 'instant',
-		glob: ['**/client/www/pages/docs/**/*.md']
-	},
-	'clerk-sveltkit': {
-		title: 'Clerk adapter for SvelteKit',
-		owner: 'markjaquith',
-		repo: 'clerk-sveltekit',
-		glob: ['**/README.md']
-	},
-	'shadcn-svelte': {
-		title: 'Shadcn Svelte',
-		owner: 'huntabyte',
-		repo: 'shadcn-svelte',
-		glob: ['**/sites/docs/src/content/**/*.md']
 	}
 }
