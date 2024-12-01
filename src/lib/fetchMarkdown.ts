@@ -67,9 +67,9 @@ async function fetchMarkdownFiles({
 
 		if (dev) {
 			if (isAllowed) {
-				console.info(`Allowed file: ${header.name}`)
+				console.info(`✅ Allowed file: ${header.name}`)
 			} else if (ignore?.some((pattern) => minimatch(header.name, pattern))) {
-				console.info(`Ignored file: ${header.name}`)
+				console.info(`❌ Ignored file: ${header.name}`)
 			}
 		}
 
@@ -138,6 +138,8 @@ export interface MinimizeOptions {
 	removePlaygroundLinks?: boolean
 	removePrettierIgnore?: boolean
 	removeNoteBlocks?: boolean
+	removeDetailsBlocks?: boolean
+	removeHtmlComments?: boolean
 }
 
 const defaultOptions: MinimizeOptions = {
@@ -145,7 +147,9 @@ const defaultOptions: MinimizeOptions = {
 	removeLegacy: false,
 	removePlaygroundLinks: false,
 	removePrettierIgnore: true,
-	removeNoteBlocks: false
+	removeNoteBlocks: true,
+	removeDetailsBlocks: true,
+	removeHtmlComments: false
 }
 
 function removeQuoteBlocks(content: string, blockType: string): string {
@@ -185,6 +189,10 @@ function minimizeContent(content: string, options?: Partial<MinimizeOptions>): s
 		minimized = removeQuoteBlocks(minimized, 'NOTE')
 	}
 
+	if (settings.removeDetailsBlocks) {
+		minimized = removeQuoteBlocks(minimized, 'DETAILS')
+	}
+
 	if (settings.removePlaygroundLinks) {
 		// Replace playground URLs with /[link] but keep the original link text
 		minimized = minimized.replace(/\[([^\]]+)\]\(\/playground[^)]+\)/g, '[$1](/REMOVED)')
@@ -195,6 +203,11 @@ function minimizeContent(content: string, options?: Partial<MinimizeOptions>): s
 			.split('\n')
 			.filter((line) => line.trim() !== '<!-- prettier-ignore -->')
 			.join('\n')
+	}
+
+	if (settings.removeHtmlComments) {
+		// Replace all HTML comments (including multi-line) with empty string
+		minimized = minimized.replace(/<!--[\s\S]*?-->/g, '')
 	}
 
 	if (settings.normalizeWhitespace) {

@@ -36,12 +36,17 @@ export const presets: Record<string, PresetConfig> = {
 		owner: 'sveltejs',
 		repo: 'svelte.dev',
 		glob: ['**/apps/svelte.dev/content/docs/svelte/**/*.md'],
-		ignore: ['**/apps/svelte.dev/content/docs/svelte/99-legacy/**/*.md'],
+		ignore: [
+			'**/apps/svelte.dev/content/docs/svelte/99-legacy/**/*.md',
+			'**/apps/svelte.dev/content/docs/svelte/07-misc/**/*.md'
+		],
 		prompt: 'Always use Svelte 5 runes. Runes do not need to be imported, they are globals.',
 		minimize: {
 			removeLegacy: true,
 			removePlaygroundLinks: true,
-			removeNoteBlocks: true
+			removeNoteBlocks: true,
+			removeDetailsBlocks: true,
+			removeHtmlComments: true
 		}
 	},
 	sveltekit: {
@@ -62,7 +67,9 @@ export const presets: Record<string, PresetConfig> = {
 		minimize: {
 			removeLegacy: true,
 			removePlaygroundLinks: true,
-			removeNoteBlocks: true
+			removeNoteBlocks: true,
+			removeDetailsBlocks: true,
+			removeHtmlComments: true
 		}
 	},
 	'svelte-cli': {
