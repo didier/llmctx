@@ -1,5 +1,11 @@
 This is a fork of llmctx with improved Svelte presets, deployed at [svelte-llm-ctx.khromov.se](https://svelte-llm-ctx.khromov.se).
 
+# TODO
+
+- [ ] Add Svelte 4 legacy preset
+- [ ] Add SvelteKit legacy preset
+- [ ] Add snapshot tests to validate minification
+
 # llmctx
 
 llmctx transforms technical documentation into AI-ready formats. It provides a simple way to access condensed, LLM-friendly versions of popular framework and library documentation through preset URLs. This makes it easier for developers to use AI coding assistants like Cursor or Zed with accurate, up-to-date context from official documentation sources.

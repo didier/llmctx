@@ -134,10 +134,12 @@ async function fetchMarkdownFiles({
 
 export interface MinimizeOptions {
 	normalizeWhitespace?: boolean
+	removeLegacy?: boolean
 }
 
 const defaultOptions: MinimizeOptions = {
-	normalizeWhitespace: false
+	normalizeWhitespace: false,
+	removeLegacy: true
 }
 
 function minimizeContent(content: string, options?: Partial<MinimizeOptions>): string {
@@ -145,28 +147,29 @@ function minimizeContent(content: string, options?: Partial<MinimizeOptions>): s
 	const settings: MinimizeOptions = options ? { ...defaultOptions, ...options } : defaultOptions
 
 	let minimized = content
-		.split('\n')
-		.reduce((acc: string[], line: string, index: number, lines: string[]) => {
-			// If we find a legacy block, skip it and all subsequent blockquote lines
-			if (line.trim() === '> [!LEGACY]') {
-				// Skip all subsequent lines that are part of the blockquote
-				while (
-					index < lines.length &&
-					(lines[index].startsWith('>') || lines[index].trim() === '')
-				) {
-					index++
+
+	if (settings.removeLegacy) {
+		minimized = minimized
+			.split('\n')
+			.reduce((acc: string[], line: string, index: number, lines: string[]) => {
+				// If we find a legacy block (with or without additional text), skip it and all subsequent blockquote lines
+				if (line.trim().startsWith('> [!LEGACY]')) {
+					// Skip all subsequent lines that are part of the blockquote
+					let i = index
+					while (i < lines.length && (lines[i].startsWith('>') || lines[i].trim() === '')) {
+						i++
+					}
+					// Update the index to skip all these lines
+					index = i - 1
+					return acc
 				}
-				return acc
-			}
 
-			// Only add the line if it's not being skipped
-			if (!acc.some((l) => l === '> [!LEGACY]')) {
+				// Only add the line if it's not being skipped
 				acc.push(line)
-			}
-
-			return acc
-		}, [])
-		.join('\n')
+				return acc
+			}, [])
+			.join('\n')
+	}
 
 	if (settings.normalizeWhitespace) {
 		minimized = minimized.replace(/\s+/g, ' ')
