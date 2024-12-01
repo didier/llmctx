@@ -1,5 +1,8 @@
-import adapter from '@sveltejs/adapter-node'
+import nodeAdapter from '@sveltejs/adapter-node'
+import autoAdapter from '@sveltejs/adapter-auto'
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte'
+
+const adapter = process.env.ADAPTER === 'node' ? nodeAdapter : autoAdapter;
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
