@@ -136,12 +136,14 @@ export interface MinimizeOptions {
 	normalizeWhitespace?: boolean
 	removeLegacy?: boolean
 	removePlaygroundLinks?: boolean
+	removePrettierIgnore?: boolean
 }
 
 const defaultOptions: MinimizeOptions = {
 	normalizeWhitespace: false,
 	removeLegacy: false,
-	removePlaygroundLinks: false
+	removePlaygroundLinks: false,
+	removePrettierIgnore: true
 }
 
 function minimizeContent(content: string, options?: Partial<MinimizeOptions>): string {
@@ -176,6 +178,13 @@ function minimizeContent(content: string, options?: Partial<MinimizeOptions>): s
 	if (settings.removePlaygroundLinks) {
 		// Replace playground URLs with /[link] but keep the original link text
 		minimized = minimized.replace(/\[([^\]]+)\]\(\/playground[^)]+\)/g, '[$1](/REMOVED)')
+	}
+
+	if (settings.removePrettierIgnore) {
+		minimized = minimized
+			.split('\n')
+			.filter((line) => line.trim() !== '<!-- prettier-ignore -->')
+			.join('\n')
 	}
 
 	if (settings.normalizeWhitespace) {
