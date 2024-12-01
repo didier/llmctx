@@ -5,10 +5,11 @@ import tarStream from 'tar-stream'
 import { Readable } from 'stream'
 import { createGunzip } from 'zlib'
 import { minimatch } from 'minimatch'
+import { swr } from './cache'
 
 // Main function to fetch and process markdown files
 export async function fetchAndProcessMarkdown(preset: PresetConfig): Promise<string> {
-	const files = await fetchMarkdownFiles(preset)
+	const { value: files } = await swr(preset.title, async () => fetchMarkdownFiles(preset))
 	if (dev) {
 		console.log(`Fetched ${files.length} files for ${preset.title}`)
 	}
@@ -79,7 +80,7 @@ async function fetchMarkdownFiles({
 			stream.on('end', () => {
 				contents.push(minimizeContent(content, minimize))
 				if (dev) {
-					console.log(`Processed file: ${header.name}`)
+					// console.log(`Processed file: ${header.name}`)
 				}
 				next()
 			})
@@ -157,9 +158,9 @@ function minimizeContent(content: string, options?: Partial<MinimizeOptions>): s
 	}
 
 	if (dev) {
-		console.log(`Original content length: ${content.length}`)
-		console.log(`Minimized content length: ${minimized.length}`)
-		console.log('Applied minimizations:', Object.keys(settings).join(', '))
+		//console.log(`Original content length: ${content.length}`)
+		//console.log(`Minimized content length: ${minimized.length}`)
+		//console.log('Applied minimizations:', Object.keys(settings).join(', '))
 	}
 
 	return minimized

@@ -4,8 +4,8 @@ import type { RequestHandler } from './$types'
 // Utils
 import { error } from '@sveltejs/kit'
 import { presets } from '$lib/presets'
-import { getCachedOrFetchMarkdown } from '$lib/markdown'
 import { dev } from '$app/environment'
+import { fetchAndProcessMarkdown } from '$lib/fetchMarkdown'
 
 export const GET: RequestHandler = async ({ params }) => {
 	const presetNames = params.preset.split(',').map((p) => p.trim())
@@ -24,13 +24,13 @@ export const GET: RequestHandler = async ({ params }) => {
 		// Fetch all contents in parallel
 		const contentPromises = presetNames.map(async (presetName) => {
 			if (dev) {
-				console.time(`Fetching markdown for ${presetName}`)
+				console.time('dataFetching')
 			}
 
-			const content = await getCachedOrFetchMarkdown(presets[presetName])
+			const content = await fetchAndProcessMarkdown(presets[presetName])
 
 			if (dev) {
-				console.timeEnd(`Fetching markdown for ${presetName}`)
+				console.timeEnd('dataFetching')
 				console.log(`Content length for ${presetName}: ${content.length}`)
 			}
 
