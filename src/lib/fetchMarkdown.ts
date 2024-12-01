@@ -78,8 +78,13 @@ async function fetchMarkdownFiles({
 			let content = ''
 			stream.on('data', (chunk) => (content += chunk.toString()))
 			stream.on('end', () => {
-				// Get the clean file path by removing the first directory (which is usually the repo name with a hash)
-				const cleanPath = header.name.split('/').slice(1).join('/')
+				// Remove the repo directory prefix and apps/svelte.dev/content
+				const cleanPath = header.name
+					.split('/')
+					.slice(1) // Remove repo directory
+					.join('/')
+					.replace('apps/svelte.dev/content/', '') // Remove the fixed prefix
+
 				// Add the file header before the content
 				const contentWithHeader = `## ${cleanPath}\n\n${minimizeContent(content, minimize)}`
 				contents.push(contentWithHeader)
