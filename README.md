@@ -1,3 +1,5 @@
+This is a fork of llmctx with improved Svelte presets, deployed at [svelte-llm-ctx.khromov.se](https://svelte-llm-ctx.khromov.se).
+
 # llmctx
 
 llmctx transforms technical documentation into AI-ready formats. It provides a simple way to access condensed, LLM-friendly versions of popular framework and library documentation through preset URLs. This makes it easier for developers to use AI coding assistants like Cursor or Zed with accurate, up-to-date context from official documentation sources.
@@ -6,9 +8,11 @@ llmctx transforms technical documentation into AI-ready formats. It provides a s
 - Regularly updated content from official documentation
 
 ## Supported presets
+
 Visit [llmctx.com](https://llmctx.com) to see all presets.
 
 ### Adding presets
+
 To add a new preset:
 
 1. Fork this repo.
@@ -28,6 +32,7 @@ To add a new preset:
 4. Create a pull request with your changes.
 
 The `glob` field supports glob patterns, providing flexible file matching:
+
 - Use `**/*.md` to match all Markdown files in any subdirectory
 - Use `**/*.mdx` to match all MDX files in any subdirectory
 - Use `!pattern` to exclude files/directories matching the pattern
