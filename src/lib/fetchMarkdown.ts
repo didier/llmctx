@@ -13,7 +13,7 @@ export async function fetchAndProcessMarkdown(preset: PresetConfig): Promise<str
 	if (dev) {
 		console.log(`Fetched ${files.length} files for ${preset.title}`)
 	}
-	return files.join(' ')
+	return files.join('\n\n')
 }
 
 function shouldIncludeFile(filename: string, glob: string[], ignore: string[] = []): boolean {
@@ -78,7 +78,11 @@ async function fetchMarkdownFiles({
 			let content = ''
 			stream.on('data', (chunk) => (content += chunk.toString()))
 			stream.on('end', () => {
-				contents.push(minimizeContent(content, minimize))
+				// Get the clean file path by removing the first directory (which is usually the repo name with a hash)
+				const cleanPath = header.name.split('/').slice(1).join('/')
+				// Add the file header before the content
+				const contentWithHeader = `## ${cleanPath}\n\n${minimizeContent(content, minimize)}`
+				contents.push(contentWithHeader)
 				if (dev) {
 					// console.log(`Processed file: ${header.name}`)
 				}
@@ -90,8 +94,21 @@ async function fetchMarkdownFiles({
 		}
 	})
 
+	if (!response.body) {
+		throw new Error('Response body is null')
+	}
+
 	// Create a readable stream from the response body
-	const tarballStream = Readable.from(response.body)
+	const chunks: Uint8Array[] = []
+	const reader = response.body.getReader()
+
+	while (true) {
+		const { done, value } = await reader.read()
+		if (done) break
+		chunks.push(value)
+	}
+
+	const tarballStream = Readable.from(Buffer.concat(chunks))
 
 	// Create a gunzip stream
 	const gunzipStream = createGunzip()
