@@ -67,9 +67,9 @@ async function fetchMarkdownFiles({
 
 		if (dev) {
 			if (isAllowed) {
-				console.info(`✅ Allowed file: ${header.name}`)
+				console.info(`Allowed file: ${header.name}`)
 			} else if (ignore?.some((pattern) => minimatch(header.name, pattern))) {
-				console.info(`❌ Ignored file: ${header.name}`)
+				console.info(`Ignored file: ${header.name}`)
 			}
 		}
 
@@ -145,9 +145,30 @@ function minimizeContent(content: string, options?: Partial<MinimizeOptions>): s
 	const settings: MinimizeOptions = options ? { ...defaultOptions, ...options } : defaultOptions
 
 	let minimized = content
+		.split('\n')
+		.reduce((acc: string[], line: string, index: number, lines: string[]) => {
+			// If we find a legacy block, skip it and all subsequent blockquote lines
+			if (line.trim() === '> [!LEGACY]') {
+				// Skip all subsequent lines that are part of the blockquote
+				while (
+					index < lines.length &&
+					(lines[index].startsWith('>') || lines[index].trim() === '')
+				) {
+					index++
+				}
+				return acc
+			}
+
+			// Only add the line if it's not being skipped
+			if (!acc.some((l) => l === '> [!LEGACY]')) {
+				acc.push(line)
+			}
+
+			return acc
+		}, [])
+		.join('\n')
 
 	if (settings.normalizeWhitespace) {
-		//console.log('Normalizing whitespace')
 		minimized = minimized.replace(/\s+/g, ' ')
 	}
 
