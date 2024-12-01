@@ -29,12 +29,7 @@ export const presets: Record<string, PresetConfig> = {
 		ignore: ['**/apps/svelte.dev/content/docs/svelte/99-legacy/**/*.md'],
 		prompt: 'Always use Svelte 5 runes. Runes do not need to be imported, they are globals.',
 		estimatedSizeKb: 350,
-		minimize: {
-			removeCodeBlocks: false,
-			removeSquareBrackets: false,
-			removeParentheses: false,
-			normalizeWhitespace: true
-		}
+		minimize: {}
 	},
 	'svelte-small': {
 		title: 'Svelte (Small)',
@@ -43,12 +38,7 @@ export const presets: Record<string, PresetConfig> = {
 		glob: ['**/apps/svelte.dev/content/docs/svelte/**/*.md'],
 		ignore: ['**/apps/svelte.dev/content/docs/svelte/99-legacy/**/*.md'],
 		prompt: 'Always use Svelte 5 runes. Runes do not need to be imported, they are globals.',
-		minimize: {
-			removeCodeBlocks: true,
-			removeSquareBrackets: false,
-			removeParentheses: false,
-			normalizeWhitespace: true
-		}
+		minimize: {}
 	},
 	sveltekit: {
 		title: 'SvelteKit',
@@ -57,12 +47,7 @@ export const presets: Record<string, PresetConfig> = {
 		glob: ['**/apps/svelte.dev/content/docs/kit/**/*.md'],
 		ignore: [],
 		estimatedSizeKb: 410,
-		minimize: {
-			removeCodeBlocks: false,
-			removeSquareBrackets: false,
-			removeParentheses: false,
-			normalizeWhitespace: true
-		}
+		minimize: {}
 	},
 	'sveltekit-small': {
 		title: 'SvelteKit (Small)',
@@ -70,12 +55,7 @@ export const presets: Record<string, PresetConfig> = {
 		repo: 'svelte.dev',
 		glob: ['**/apps/svelte.dev/content/docs/kit/**/*.md'],
 		ignore: [],
-		minimize: {
-			removeCodeBlocks: true,
-			removeSquareBrackets: false,
-			removeParentheses: false,
-			normalizeWhitespace: true
-		}
+		minimize: {}
 	},
 	'svelte-cli': {
 		title: 'Svelte CLI - npx sv',
@@ -83,11 +63,6 @@ export const presets: Record<string, PresetConfig> = {
 		repo: 'svelte.dev',
 		glob: ['**/apps/svelte.dev/content/docs/cli/**/*.md'],
 		ignore: [],
-		minimize: {
-			removeCodeBlocks: false,
-			removeSquareBrackets: false,
-			removeParentheses: false,
-			normalizeWhitespace: false
-		}
+		minimize: {}
 	}
 }

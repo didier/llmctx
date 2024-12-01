@@ -112,18 +112,10 @@ async function fetchMarkdownFiles({
 
 export interface MinimizeOptions {
 	normalizeWhitespace?: boolean
-	removeCodeBlocks?: boolean
-	removeSquareBrackets?: boolean
-	removeParentheses?: boolean
-	trim?: boolean
 }
 
 const defaultOptions: MinimizeOptions = {
-	normalizeWhitespace: true,
-	removeCodeBlocks: true,
-	removeSquareBrackets: true,
-	removeParentheses: true,
-	trim: true
+	normalizeWhitespace: false
 }
 
 function minimizeContent(content: string, options?: Partial<MinimizeOptions>): string {
@@ -137,25 +129,7 @@ function minimizeContent(content: string, options?: Partial<MinimizeOptions>): s
 		minimized = minimized.replace(/\s+/g, ' ')
 	}
 
-	if (settings.removeCodeBlocks) {
-		//console.log('Removing code blocks')
-		minimized = minimized.replace(/```[\s\S]*?```/g, '')
-	}
-
-	if (settings.removeSquareBrackets) {
-		//console.log('Removing square brackets')
-		minimized = minimized.replace(/\[.*?\]/g, '')
-	}
-
-	if (settings.removeParentheses) {
-		//console.log('Removing parentheses')
-		minimized = minimized.replace(/\(.*?\)/g, '')
-	}
-
-	if (settings.trim) {
-		//console.log('Trimming whitespace')
-		minimized = minimized.trim()
-	}
+	minimized = minimized.trim()
 
 	if (dev) {
 		//console.log(`Original content length: ${content.length}`)
