@@ -64,3 +64,10 @@ export const GET: RequestHandler = async ({ params }) => {
 		error(500, `Failed to fetch documentation for presets "${presetNames.join(', ')}"`)
 	}
 }
+
+export const config = {
+	isr: {
+		expiration: 3600
+		// bypassToken: 'REPLACE_ME_WITH_SECRET_VALUE',
+	}
+}
