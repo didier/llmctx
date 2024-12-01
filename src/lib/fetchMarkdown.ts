@@ -67,9 +67,9 @@ async function fetchMarkdownFiles({
 
 		if (dev) {
 			if (isAllowed) {
-				console.info(`Allowed file: ${header.name}`)
+				console.info(`✅ Allowed file: ${header.name}`)
 			} else if (ignore?.some((pattern) => minimatch(header.name, pattern))) {
-				console.info(`Ignored file: ${header.name}`)
+				console.info(`❌ Ignored file: ${header.name}`)
 			}
 		}
 
