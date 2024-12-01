@@ -38,7 +38,10 @@ export const presets: Record<string, PresetConfig> = {
 		glob: ['**/apps/svelte.dev/content/docs/svelte/**/*.md'],
 		ignore: ['**/apps/svelte.dev/content/docs/svelte/99-legacy/**/*.md'],
 		prompt: 'Always use Svelte 5 runes. Runes do not need to be imported, they are globals.',
-		minimize: {}
+		minimize: {
+			removeLegacy: true,
+			removePlaygroundLinks: true
+		}
 	},
 	sveltekit: {
 		title: 'SvelteKit',
@@ -55,7 +58,10 @@ export const presets: Record<string, PresetConfig> = {
 		repo: 'svelte.dev',
 		glob: ['**/apps/svelte.dev/content/docs/kit/**/*.md'],
 		ignore: [],
-		minimize: {}
+		minimize: {
+			removeLegacy: true,
+			removePlaygroundLinks: true
+		}
 	},
 	'svelte-cli': {
 		title: 'Svelte CLI - npx sv',

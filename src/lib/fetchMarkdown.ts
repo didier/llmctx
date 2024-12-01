@@ -135,11 +135,13 @@ async function fetchMarkdownFiles({
 export interface MinimizeOptions {
 	normalizeWhitespace?: boolean
 	removeLegacy?: boolean
+	removePlaygroundLinks?: boolean
 }
 
 const defaultOptions: MinimizeOptions = {
 	normalizeWhitespace: false,
-	removeLegacy: true
+	removeLegacy: false,
+	removePlaygroundLinks: false
 }
 
 function minimizeContent(content: string, options?: Partial<MinimizeOptions>): string {
@@ -169,6 +171,11 @@ function minimizeContent(content: string, options?: Partial<MinimizeOptions>): s
 				return acc
 			}, [])
 			.join('\n')
+	}
+
+	if (settings.removePlaygroundLinks) {
+		// Replace playground URLs with /[link] but keep the original link text
+		minimized = minimized.replace(/\[([^\]]+)\]\(\/playground[^)]+\)/g, '[$1](/REMOVED)')
 	}
 
 	if (settings.normalizeWhitespace) {
