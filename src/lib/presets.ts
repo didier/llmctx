@@ -38,7 +38,8 @@ export const presets: Record<string, PresetConfig> = {
 		glob: ['**/apps/svelte.dev/content/docs/svelte/**/*.md'],
 		ignore: [
 			'**/apps/svelte.dev/content/docs/svelte/99-legacy/**/*.md',
-			'**/apps/svelte.dev/content/docs/svelte/07-misc/**/*.md'
+			'**/apps/svelte.dev/content/docs/svelte/07-misc/**/*.md',
+			'**/apps/svelte.dev/content/docs/svelte/98-reference/**/*.md' // TODO: This one is questionable to remove
 		],
 		prompt: 'Always use Svelte 5 runes. Runes do not need to be imported, they are globals.',
 		minimize: {
@@ -54,7 +55,6 @@ export const presets: Record<string, PresetConfig> = {
 		owner: 'sveltejs',
 		repo: 'svelte.dev',
 		glob: ['**/apps/svelte.dev/content/docs/kit/**/*.md'],
-		ignore: [],
 		estimatedSizeKb: 410,
 		minimize: {}
 	},
@@ -63,7 +63,11 @@ export const presets: Record<string, PresetConfig> = {
 		owner: 'sveltejs',
 		repo: 'svelte.dev',
 		glob: ['**/apps/svelte.dev/content/docs/kit/**/*.md'],
-		ignore: [],
+		ignore: [
+			'**/apps/svelte.dev/content/docs/kit/25-build-and-deploy/**/*.md',
+			'**/apps/svelte.dev/content/docs/kit/60-appendix/**/*.md',
+			'**/apps/svelte.dev/content/docs/kit/98-reference/**/*.md'
+		],
 		minimize: {
 			removeLegacy: true,
 			removePlaygroundLinks: true,
