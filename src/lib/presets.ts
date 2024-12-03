@@ -23,27 +23,16 @@ export type PresetConfig = {
 }
 
 export const presets: Record<string, PresetConfig> = {
-	svelte: {
-		title: 'Svelte',
-		description: 'Complete documentation including legacy and reference',
+	'svelte-complete': {
+		title: '⭐️ Svelte + SvelteKit (Recommended - Large preset)',
+		description: 'Complete Svelte + SvelteKit docs content excluding legacy docs',
 		owner: 'sveltejs',
 		repo: 'svelte.dev',
-		glob: ['**/apps/svelte.dev/content/docs/svelte/**/*.md'],
-		ignore: ['**/apps/svelte.dev/content/docs/svelte/99-legacy/**/*.md'],
-		prompt: 'Always use Svelte 5 runes. Runes do not need to be imported, they are globals.',
-		estimatedSizeKb: 350,
-		minimize: {}
-	},
-	'svelte-small': {
-		title: 'Svelte (Small)',
-		description: 'Most docs excluding legacy and reference',
-		owner: 'sveltejs',
-		repo: 'svelte.dev',
-		glob: ['**/apps/svelte.dev/content/docs/svelte/**/*.md'],
+		glob: [
+			'**/apps/svelte.dev/content/docs/kit/**/*.md',
+			'**/apps/svelte.dev/content/docs/svelte/**/*.md'
+		],
 		ignore: [
-			'**/apps/svelte.dev/content/docs/svelte/99-legacy/**/*.md',
-			'**/apps/svelte.dev/content/docs/svelte/07-misc/**/*.md',
-			'**/apps/svelte.dev/content/docs/svelte/98-reference/**/*.md' // TODO: This one is questionable to remove
 		],
 		prompt: 'Always use Svelte 5 runes. Runes do not need to be imported, they are globals.',
 		minimize: {
@@ -51,11 +40,12 @@ export const presets: Record<string, PresetConfig> = {
 			removePlaygroundLinks: true,
 			removeNoteBlocks: true,
 			removeDetailsBlocks: true,
-			removeHtmlComments: true
+			removeHtmlComments: true,
+			normalizeWhitespace: true
 		}
 	},
 	'svelte-complete-small': {
-		title: 'Svelte + SvelteKit (Recommended Small preset)',
+		title: '⭐️ Svelte + SvelteKit (Recommended - Small preset)',
 		description: 'Tutorial content and Svelte + Kit reference docs',
 		owner: 'sveltejs',
 		repo: 'svelte.dev',
@@ -76,9 +66,9 @@ export const presets: Record<string, PresetConfig> = {
 			normalizeWhitespace: true
 		}
 	},
-	'svelte-tiny': {
-		title: 'Svelte + SvelteKit (Recommended Tiny preset)',
-		description: 'Includes tutorial content only',
+	'svelte-complete-tiny': {
+		title: '⭐️ Svelte + SvelteKit (Recommended - Tiny preset)',
+		description: 'Tutorial content only',
 		owner: 'sveltejs',
 		repo: 'svelte.dev',
 		glob: [
@@ -96,31 +86,24 @@ export const presets: Record<string, PresetConfig> = {
 			 normalizeWhitespace: true
 		}
 	},
+	svelte: {
+		title: 'Svelte (Full)',
+		description: 'Complete documentation including legacy and reference',
+		owner: 'sveltejs',
+		repo: 'svelte.dev',
+		glob: ['**/apps/svelte.dev/content/docs/svelte/**/*.md'],
+		ignore: ['**/apps/svelte.dev/content/docs/svelte/99-legacy/**/*.md'],
+		prompt: 'Always use Svelte 5 runes. Runes do not need to be imported, they are globals.',
+		estimatedSizeKb: 350,
+		minimize: {}
+	},
 	sveltekit: {
-		title: 'SvelteKit',
+		title: 'SvelteKit (Full)',
 		owner: 'sveltejs',
 		repo: 'svelte.dev',
 		glob: ['**/apps/svelte.dev/content/docs/kit/**/*.md'],
 		estimatedSizeKb: 410,
 		minimize: {}
-	},
-	'sveltekit-small': {
-		title: 'SvelteKit (Small)',
-		owner: 'sveltejs',
-		repo: 'svelte.dev',
-		glob: ['**/apps/svelte.dev/content/docs/kit/**/*.md'],
-		ignore: [
-			'**/apps/svelte.dev/content/docs/kit/25-build-and-deploy/**/*.md',
-			'**/apps/svelte.dev/content/docs/kit/60-appendix/**/*.md',
-			'**/apps/svelte.dev/content/docs/kit/98-reference/**/*.md'
-		],
-		minimize: {
-			removeLegacy: true,
-			removePlaygroundLinks: true,
-			removeNoteBlocks: true,
-			removeDetailsBlocks: true,
-			removeHtmlComments: true
-		}
 	},
 	'svelte-cli': {
 		title: 'Svelte CLI - npx sv',

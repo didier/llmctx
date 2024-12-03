@@ -18,8 +18,8 @@ const storage: Storage = {
 
 export const swr = createStaleWhileRevalidateCache({
 	storage,
-	minTimeToStale: /*dev ? 0 : */60 * 60 * 1000,
-	maxTimeToLive: /*dev ? 1 : */24 * 60 * 60 * 1000,
+	minTimeToStale: dev ? 0 : 60 * 60 * 1000,
+	maxTimeToLive: dev ? 1 : 24 * 60 * 60 * 1000,
 	serialize: JSON.stringify,
 	deserialize: JSON.parse
 })

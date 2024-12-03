@@ -1,4 +1,4 @@
-This is a fork of llmctx with improved Svelte presets, deployed at [svelte-llm-ctx.khromov.se](https://svelte-llm-ctx.khromov.se).
+This is a fork of llmctx with improved Svelte presets, deployed at [svelte-llm.khromov.se](https://svelte-llm.khromov.se).
 
 # TODO
 

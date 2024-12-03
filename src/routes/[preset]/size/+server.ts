@@ -15,8 +15,8 @@ export const GET: RequestHandler = async ({ params }) => {
         // Use SWR cache with a longer TTL for sizes
         const { value: size } = await swr(`${preset}-size`, async () => {
             const content = await fetchAndProcessMarkdown(presets[preset])
-            // Get size in KB and round to 1 decimal
-            const sizeKb = Math.round(new TextEncoder().encode(content).length / 1024 * 10) / 10
+            // Ensure we get a whole number by using parseInt after floor
+            const sizeKb = parseInt(Math.floor(new TextEncoder().encode(content).length / 1024).toString())
             return sizeKb
         }, {
             // Cache size calculations for longer since they change less frequently
@@ -24,7 +24,8 @@ export const GET: RequestHandler = async ({ params }) => {
             maxTimeToLive: 7 * 24 * 60 * 60 * 1000 // 7 days
         })
 
-        return new Response(JSON.stringify({ sizeKb: size }), {
+        // Ensure the response is also strictly an integer
+        return new Response(JSON.stringify({ sizeKb: parseInt(size.toString()) }), {
             headers: {
                 'Content-Type': 'application/json'
             }

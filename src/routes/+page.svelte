@@ -1,14 +1,16 @@
-<script>
+<script lang="ts">
 	import { presets as _presets } from '$lib/presets'
-	const SITE_URL = 'https://svelte-llm-ctx.khromov.se'
+	import PresetListItem from '$lib/components/PresetListItem.svelte'
+	import { dev } from '$app/environment'
 
-	let presets = $derived(
-		Object.entries(_presets)
-			.map(([key, value]) => {
-				return { key: key.toLowerCase(), ...value }
-			})
-			.sort()
-	)
+	const SITE_URL = dev ? 'http://localhost:5173' : 'https://svelte-llm.khromov.se'
+
+	let presets = Object.entries(_presets)
+		.map(([key, value]) => ({
+			key: key.toLowerCase(),
+			...value
+		}))
+		.sort()
 
 	const instructions = [
 		{
@@ -19,7 +21,7 @@
 		{
 			title: 'Zed',
 			description:
-				'You can use llmctx directly in Zed using a <a href="https://zed.dev/docs/assistant/commands">/fetch command</a>.',
+				'You can use this project directly in Zed using a <a href="https://zed.dev/docs/assistant/commands">/fetch command</a>.',
 			command: `/fetch ${SITE_URL}/[preset]`
 		},
 		{
@@ -32,7 +34,7 @@
 
 <main>
 	<article>
-		<div>svelte-llm-ctx</div>
+		<div>svelte-llm</div>
 		<h1>Developer documentation for Svelte in an LLM-ready format</h1>
 
 		<p>
@@ -63,14 +65,10 @@
 				href="/svelte,sveltekit,svelte-cli">Link</a
 			>)
 		</p>
-		<h2>Currently supported presets:</h2>
+		<h2>LLM-friendly documentation presets</h2>
 		<ul>
 			{#each presets as preset}
-				<li>
-					<a href="/{preset.key}">{preset.title}</a>{#if preset.estimatedSizeKb}
-						&nbsp;(~{preset.estimatedSizeKb}KB)
-					{/if}
-				</li>
+				<PresetListItem {...preset} />
 			{/each}
 
 			<li>Svelte 4 (Legacy, Coming soon)</li>
