@@ -7,7 +7,7 @@ import { createGunzip } from 'zlib'
 import { minimatch } from 'minimatch'
 import { swr } from './cache'
 
-function sortFiles(files: string[]): string[] {
+function sortFilesWithinGroup(files: string[]): string[] {
 	return files.sort((a, b) => {
 		const aPath = a.split('\n')[0].replace('## ', '')
 		const bPath = b.split('\n')[0].replace('## ', '')
@@ -27,18 +27,18 @@ export async function fetchAndProcessMarkdown(preset: PresetConfig): Promise<str
 	if (dev) {
 		console.log(`Fetched ${files.length} files for ${preset.title}`)
 	}
-	return sortFiles(files).join('\n\n')
+	return files.join('\n\n')
 }
 
-function shouldIncludeFile(filename: string, glob: string[], ignore: string[] = []): boolean {
+function shouldIncludeFile(filename: string, glob: string, ignore: string[] = []): boolean {
 	// First check if the file should be ignored
 	const shouldIgnore = ignore.some((pattern) => minimatch(filename, pattern))
 	if (shouldIgnore) {
 		return false
 	}
 
-	// Then check if the file matches include patterns
-	return glob.some((pattern) => minimatch(filename, pattern))
+	// Then check if the file matches the specific glob pattern
+	return minimatch(filename, glob)
 }
 
 // Fetch markdown files using GitHub's tarball API
@@ -68,7 +68,10 @@ async function fetchMarkdownFiles({
 		throw new Error(`Failed to fetch tarball: ${response.statusText}`)
 	}
 
-	const contents: string[] = []
+	// Create a Map to store files for each glob pattern while maintaining order
+	const globResults = new Map<string, string[]>()
+	glob.forEach((pattern) => globResults.set(pattern, []))
+
 	const extractStream = tarStream.extract()
 
 	let processedFiles = 0
@@ -77,37 +80,44 @@ async function fetchMarkdownFiles({
 	// Process each file in the tarball
 	extractStream.on('entry', (header, stream, next) => {
 		processedFiles++
-		const isAllowed = shouldIncludeFile(header.name, glob, ignore)
+		let matched = false
 
-		if (dev) {
-			if (isAllowed) {
-				console.info(`✅ Allowed file: ${header.name}`)
-			} else if (ignore?.some((pattern) => minimatch(header.name, pattern))) {
-				console.info(`❌ Ignored file: ${header.name}`)
+		// Check each glob pattern in order
+		for (const pattern of glob) {
+			if (shouldIncludeFile(header.name, pattern, ignore)) {
+				matched = true
+				matchedFiles++
+
+				if (header.type === 'file') {
+					let content = ''
+					stream.on('data', (chunk) => (content += chunk.toString()))
+					stream.on('end', () => {
+						// Remove the repo directory prefix and apps/svelte.dev/content
+						const cleanPath = header.name
+							.split('/')
+							.slice(1) // Remove repo directory
+							.join('/')
+							.replace('apps/svelte.dev/content/', '') // Remove the fixed prefix
+
+						// Add the file header before the content
+						const contentWithHeader = `## ${cleanPath}\n\n${minimizeContent(content, minimize)}`
+
+						// Add to the appropriate glob pattern's results
+						const files = globResults.get(pattern) || []
+						files.push(contentWithHeader)
+						globResults.set(pattern, files)
+
+						if (dev) {
+							// console.log(`Processed file: ${header.name}`)
+						}
+						next()
+					})
+					return // Exit after first match
+				}
 			}
 		}
 
-		if (header.type === 'file' && isAllowed) {
-			matchedFiles++
-			let content = ''
-			stream.on('data', (chunk) => (content += chunk.toString()))
-			stream.on('end', () => {
-				// Remove the repo directory prefix and apps/svelte.dev/content
-				const cleanPath = header.name
-					.split('/')
-					.slice(1) // Remove repo directory
-					.join('/')
-					.replace('apps/svelte.dev/content/', '') // Remove the fixed prefix
-
-				// Add the file header before the content
-				const contentWithHeader = `## ${cleanPath}\n\n${minimizeContent(content, minimize)}`
-				contents.push(contentWithHeader)
-				if (dev) {
-					// console.log(`Processed file: ${header.name}`)
-				}
-				next()
-			})
-		} else {
+		if (!matched) {
 			stream.resume()
 			next()
 		}
@@ -143,7 +153,15 @@ async function fetchMarkdownFiles({
 		console.log(`Files matching glob: ${matchedFiles}`)
 	}
 
-	return contents
+	// Combine results in the order of glob patterns
+	const orderedResults: string[] = []
+	for (const pattern of glob) {
+		const filesForPattern = globResults.get(pattern) || []
+		// Sort files within each glob pattern group
+		orderedResults.push(...sortFilesWithinGroup(filesForPattern))
+	}
+
+	return orderedResults
 }
 
 export interface MinimizeOptions {
@@ -196,7 +214,7 @@ function removeDiffMarkersFromContent(content: string): string {
 	const lines = content.split('\n')
 	const processedLines = lines.map((line) => {
 		// Track if we're entering or leaving a code block
-		if (line.trim().startsWith('```')) {
+		if (line.trim().startsWith('\`\`\`')) {
 			inCodeBlock = !inCodeBlock
 			return line
 		}
