@@ -38,9 +38,9 @@
 		<h1>Developer documentation for Svelte in an LLM-ready format</h1>
 
 		<p>
-			This side provides Svelte 5 and SvelteKit documentation in an LLM-friendly format. Pick a
-			preset, get AI-ready context. Perfect for coding with AI assistants like Cursor or Zed, or
-			uploading to Claude Projects.
+			This side provides Svelte 5 and SvelteKit documentation in an LLM-friendly format, also known
+			as <em>llms.txt</em>. Pick a preset and get an AI-ready context text file. Perfect for coding
+			with AI assistants like Cursor or Zed, or uploading to Claude Projects.
 		</p>
 		<p>
 			Documentation is automatically fetched from the official documentation source on GitHub and
