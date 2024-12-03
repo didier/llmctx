@@ -8,17 +8,17 @@ import { minimatch } from 'minimatch'
 import { swr } from './cache'
 
 function sortFiles(files: string[]): string[] {
-    return files.sort((a, b) => {
-        const aPath = a.split('\n')[0].replace('## ', '')
-        const bPath = b.split('\n')[0].replace('## ', '')
-        
-        // Check if one path is a parent of the other
-        if (bPath.startsWith(aPath.replace('/index.md', '/'))) return -1
-        if (aPath.startsWith(bPath.replace('/index.md', '/'))) return 1
+	return files.sort((a, b) => {
+		const aPath = a.split('\n')[0].replace('## ', '')
+		const bPath = b.split('\n')[0].replace('## ', '')
 
-        // If not parent/child relationship, sort by path
-        return aPath.localeCompare(bPath)
-    })
+		// Check if one path is a parent of the other
+		if (bPath.startsWith(aPath.replace('/index.md', '/'))) return -1
+		if (aPath.startsWith(bPath.replace('/index.md', '/'))) return 1
+
+		// If not parent/child relationship, sort by path
+		return aPath.localeCompare(bPath)
+	})
 }
 
 // Main function to fetch and process markdown files
