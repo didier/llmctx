@@ -10,6 +10,7 @@
     let sizeKb = $state<number | undefined>(undefined);
     let sizeLoading = $state<boolean | undefined>(undefined);
     let sizeError = $state<string | undefined>(undefined);
+    let dialog = $state<HTMLDialogElement | null>(null);
 
     onMount(async () => {
         try {
@@ -29,7 +30,13 @@
 <li>
     <a href="/{key}">{title}</a>
     {#if description}
-        <span class="asterisk" title={description}>*</span>
+        <span class="info-marker" on:click={() => dialog?.showModal()}>*</span>
+        <dialog bind:this={dialog}>
+            <form method="dialog">
+                <p>{description}</p>
+                <button autofocus>Close</button>
+            </form>
+        </dialog>
     {/if}
     {#if sizeKb}
         &nbsp;(~{sizeKb}KB)
@@ -41,9 +48,31 @@
 </li>
 
 <style>
-    .asterisk {
-        color: #666;
+    .info-marker {
         cursor: help;
+        color: #666;
         margin-left: 4px;
+    }
+
+    dialog {
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        padding: 1em;
+    }
+
+    dialog::backdrop {
+        background: rgba(0, 0, 0, 0.3);
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+        align-items: flex-start;
+    }
+
+    button {
+        padding: 0.5em 1em;
+        cursor: pointer;
     }
 </style>
