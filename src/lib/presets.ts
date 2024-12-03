@@ -51,7 +51,7 @@ export const presets: Record<string, PresetConfig> = {
 		}
 	},
 	'svelte-small-experimental': {
-		title: 'Svelte + SvelteKit (Small Experimental)',
+		title: 'Svelte + SvelteKit (Experimental Small preset)',
 		owner: 'sveltejs',
 		repo: 'svelte.dev',
 		glob: ['**/apps/svelte.dev/content/tutorial/**/*.md'],
@@ -59,11 +59,12 @@ export const presets: Record<string, PresetConfig> = {
 		],
 		prompt: 'Always use Svelte 5 runes. Runes do not need to be imported, they are globals.',
 		minimize: {
-			//removeLegacy: true,
-			//removePlaygroundLinks: true,
-			//removeNoteBlocks: true,
-			//removeDetailsBlocks: true,
-			//removeHtmlComments: true
+			removeLegacy: true,
+			removePlaygroundLinks: true,
+			removeNoteBlocks: true,
+			removeDetailsBlocks: true,
+			removeHtmlComments: true,
+			// normalizeWhitespace: true
 		}
 	},
 	sveltekit: {

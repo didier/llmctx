@@ -189,15 +189,17 @@ function removeDiffMarkersFromContent(content: string): string {
 
         // Only process lines within code blocks
         if (inCodeBlock) {
-            // Handle lines that start with --- or +++ with possible whitespace before
-            line = line.replace(/^[\s]*(\+{3}|\-{3})/g, '')
             // Handle lines that end with --- or +++ with possible whitespace after
             line = line.replace(/(\+{3}|\-{3})[\s]*$/g, '')
 
-            // Handle single + or - markers at start of lines with possible whitespace
-            line = line.replace(/^[\s]*[\+\-][\s]/g, '')
+            // Handle triple markers at start while preserving indentation
+            // This captures the whitespace before the marker and adds it back
+            line = line.replace(/^(\s*)(\+{3}|\-{3})\s*/g, '$1')
 
-            // Handle multi-line diff blocks where --- or +++ might be in the middle of the line
+            // Handle single + or - markers at start while preserving indentation
+            line = line.replace(/^(\s*)[\+\-](\s)/g, '$1')
+
+            // Handle multi-line diff blocks where --- or +++ might be in the middle of line
             line = line.replace(/[\s]*(\+{3}|\-{3})[\s]*/g, '')
         }
 
