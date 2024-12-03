@@ -30,10 +30,11 @@
 <li>
 	<a href="/{key}">{title}</a>
 	{#if description}
-		<span class="info-marker" on:click={() => dialog?.showModal()}>*</span>
+		<button class="info-marker" onclick={() => dialog?.showModal()}>*</button>
 		<dialog bind:this={dialog}>
 			<form method="dialog">
 				<p>{description}</p>
+				<!-- svelte-ignore a11y_autofocus -->
 				<button autofocus>Close</button>
 			</form>
 		</dialog>
@@ -74,5 +75,18 @@
 	button {
 		padding: 0.5em 1em;
 		cursor: pointer;
+	}
+
+	button.info-marker {
+		padding: 0.5em 1em;
+		cursor: pointer;
+		/* remove default button styles */
+		background: none;
+		border: none;
+		color: inherit;
+		font: inherit;
+		text-align: inherit;
+		margin: 0;
+		padding: 0;
 	}
 </style>
