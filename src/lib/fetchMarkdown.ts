@@ -7,13 +7,27 @@ import { createGunzip } from 'zlib'
 import { minimatch } from 'minimatch'
 import { swr } from './cache'
 
+function sortFiles(files: string[]): string[] {
+    return files.sort((a, b) => {
+        const aPath = a.split('\n')[0].replace('## ', '')
+        const bPath = b.split('\n')[0].replace('## ', '')
+        
+        // Check if one path is a parent of the other
+        if (bPath.startsWith(aPath.replace('/index.md', '/'))) return -1
+        if (aPath.startsWith(bPath.replace('/index.md', '/'))) return 1
+
+        // If not parent/child relationship, sort by path
+        return aPath.localeCompare(bPath)
+    })
+}
+
 // Main function to fetch and process markdown files
 export async function fetchAndProcessMarkdown(preset: PresetConfig): Promise<string> {
 	const { value: files } = await swr(preset.title, async () => fetchMarkdownFiles(preset))
 	if (dev) {
 		console.log(`Fetched ${files.length} files for ${preset.title}`)
 	}
-	return files.join('\n\n')
+	return sortFiles(files).join('\n\n')
 }
 
 function shouldIncludeFile(filename: string, glob: string[], ignore: string[] = []): boolean {
@@ -140,7 +154,7 @@ export interface MinimizeOptions {
 	removeNoteBlocks?: boolean
 	removeDetailsBlocks?: boolean
 	removeHtmlComments?: boolean
-	removeDiffMarkers?: boolean // New option for removing diff markers
+	removeDiffMarkers?: boolean
 }
 
 const defaultOptions: MinimizeOptions = {
@@ -151,7 +165,7 @@ const defaultOptions: MinimizeOptions = {
 	removeNoteBlocks: true,
 	removeDetailsBlocks: true,
 	removeHtmlComments: false,
-	removeDiffMarkers: true // Enable by default
+	removeDiffMarkers: true
 }
 
 function removeQuoteBlocks(content: string, blockType: string): string {
@@ -178,35 +192,35 @@ function removeQuoteBlocks(content: string, blockType: string): string {
 }
 
 function removeDiffMarkersFromContent(content: string): string {
-    let inCodeBlock = false
-    const lines = content.split('\n')
-    const processedLines = lines.map((line) => {
-        // Track if we're entering or leaving a code block
-        if (line.trim().startsWith('```')) {
-            inCodeBlock = !inCodeBlock
-            return line
-        }
+	let inCodeBlock = false
+	const lines = content.split('\n')
+	const processedLines = lines.map((line) => {
+		// Track if we're entering or leaving a code block
+		if (line.trim().startsWith('```')) {
+			inCodeBlock = !inCodeBlock
+			return line
+		}
 
-        // Only process lines within code blocks
-        if (inCodeBlock) {
-            // Handle lines that end with --- or +++ with possible whitespace after
-            line = line.replace(/(\+{3}|\-{3})[\s]*$/g, '')
+		// Only process lines within code blocks
+		if (inCodeBlock) {
+			// Handle lines that end with --- or +++ with possible whitespace after
+			line = line.replace(/(\+{3}|\-{3})[\s]*$/g, '')
 
-            // Handle triple markers at start while preserving indentation
-            // This captures the whitespace before the marker and adds it back
-            line = line.replace(/^(\s*)(\+{3}|\-{3})\s*/g, '$1')
+			// Handle triple markers at start while preserving indentation
+			// This captures the whitespace before the marker and adds it back
+			line = line.replace(/^(\s*)(\+{3}|\-{3})\s*/g, '$1')
 
-            // Handle single + or - markers at start while preserving indentation
-            line = line.replace(/^(\s*)[\+\-](\s)/g, '$1')
+			// Handle single + or - markers at start while preserving indentation
+			line = line.replace(/^(\s*)[\+\-](\s)/g, '$1')
 
-            // Handle multi-line diff blocks where --- or +++ might be in the middle of line
-            line = line.replace(/[\s]*(\+{3}|\-{3})[\s]*/g, '')
-        }
+			// Handle multi-line diff blocks where --- or +++ might be in the middle of line
+			line = line.replace(/[\s]*(\+{3}|\-{3})[\s]*/g, '')
+		}
 
-        return line
-    })
+		return line
+	})
 
-    return processedLines.join('\n')
+	return processedLines.join('\n')
 }
 
 function minimizeContent(content: string, options?: Partial<MinimizeOptions>): string {

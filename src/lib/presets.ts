@@ -4,6 +4,8 @@ import type { MinimizeOptions } from './fetchMarkdown'
 export type PresetConfig = {
 	/** The pretty title of the preset */
 	title: string
+	/** Optional description of the preset */
+	description?: string
 	/** The owner of the GitHub repository */
 	owner: string
 	/** The name of the GitHub repository */
@@ -23,6 +25,7 @@ export type PresetConfig = {
 export const presets: Record<string, PresetConfig> = {
 	svelte: {
 		title: 'Svelte',
+		description: 'Complete documentation including legacy and reference',
 		owner: 'sveltejs',
 		repo: 'svelte.dev',
 		glob: ['**/apps/svelte.dev/content/docs/svelte/**/*.md'],
@@ -33,6 +36,7 @@ export const presets: Record<string, PresetConfig> = {
 	},
 	'svelte-small': {
 		title: 'Svelte (Small)',
+		description: 'Most docs excluding legacy and reference',
 		owner: 'sveltejs',
 		repo: 'svelte.dev',
 		glob: ['**/apps/svelte.dev/content/docs/svelte/**/*.md'],
@@ -50,11 +54,16 @@ export const presets: Record<string, PresetConfig> = {
 			removeHtmlComments: true
 		}
 	},
-	'svelte-small-experimental': {
-		title: 'Svelte + SvelteKit (Experimental Small preset)',
+	'svelte-complete-small': {
+		title: 'Svelte + SvelteKit (Recommended Small preset)',
+		description: 'Tutorial content and Svelte + Kit reference docs',
 		owner: 'sveltejs',
 		repo: 'svelte.dev',
-		glob: ['**/apps/svelte.dev/content/tutorial/**/*.md'],
+		glob: [
+			'**/apps/svelte.dev/content/tutorial/**/*.md',
+			'**/apps/svelte.dev/content/docs/svelte/98-reference/**/*.md',
+			'**/apps/svelte.dev/content/docs/kit/98-reference/**/*.md'
+		],
 		ignore: [
 		],
 		prompt: 'Always use Svelte 5 runes. Runes do not need to be imported, they are globals.',
@@ -64,7 +73,27 @@ export const presets: Record<string, PresetConfig> = {
 			removeNoteBlocks: true,
 			removeDetailsBlocks: true,
 			removeHtmlComments: true,
-			// normalizeWhitespace: true
+			normalizeWhitespace: true
+		}
+	},
+	'svelte-tiny': {
+		title: 'Svelte + SvelteKit (Recommended Tiny preset)',
+		description: 'Includes tutorial content only',
+		owner: 'sveltejs',
+		repo: 'svelte.dev',
+		glob: [
+			'**/apps/svelte.dev/content/tutorial/**/*.md',
+		],
+		ignore: [
+		],
+		prompt: 'Always use Svelte 5 runes. Runes do not need to be imported, they are globals.',
+		minimize: {
+			removeLegacy: true,
+			removePlaygroundLinks: true,
+			removeNoteBlocks: true,
+			removeDetailsBlocks: true,
+			removeHtmlComments: true,
+			 normalizeWhitespace: true
 		}
 	},
 	sveltekit: {
