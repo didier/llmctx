@@ -140,6 +140,7 @@ export interface MinimizeOptions {
 	removeNoteBlocks?: boolean
 	removeDetailsBlocks?: boolean
 	removeHtmlComments?: boolean
+	removeDiffMarkers?: boolean // New option for removing diff markers
 }
 
 const defaultOptions: MinimizeOptions = {
@@ -149,7 +150,8 @@ const defaultOptions: MinimizeOptions = {
 	removePrettierIgnore: true,
 	removeNoteBlocks: true,
 	removeDetailsBlocks: true,
-	removeHtmlComments: false
+	removeHtmlComments: false,
+	removeDiffMarkers: true // Enable by default
 }
 
 function removeQuoteBlocks(content: string, blockType: string): string {
@@ -175,11 +177,45 @@ function removeQuoteBlocks(content: string, blockType: string): string {
 		.join('\n')
 }
 
+function removeDiffMarkersFromContent(content: string): string {
+    let inCodeBlock = false
+    const lines = content.split('\n')
+    const processedLines = lines.map((line) => {
+        // Track if we're entering or leaving a code block
+        if (line.trim().startsWith('```')) {
+            inCodeBlock = !inCodeBlock
+            return line
+        }
+
+        // Only process lines within code blocks
+        if (inCodeBlock) {
+            // Handle lines that start with --- or +++ with possible whitespace before
+            line = line.replace(/^[\s]*(\+{3}|\-{3})/g, '')
+            // Handle lines that end with --- or +++ with possible whitespace after
+            line = line.replace(/(\+{3}|\-{3})[\s]*$/g, '')
+
+            // Handle single + or - markers at start of lines with possible whitespace
+            line = line.replace(/^[\s]*[\+\-][\s]/g, '')
+
+            // Handle multi-line diff blocks where --- or +++ might be in the middle of the line
+            line = line.replace(/[\s]*(\+{3}|\-{3})[\s]*/g, '')
+        }
+
+        return line
+    })
+
+    return processedLines.join('\n')
+}
+
 function minimizeContent(content: string, options?: Partial<MinimizeOptions>): string {
 	// Merge with defaults, but only for properties that are defined
 	const settings: MinimizeOptions = options ? { ...defaultOptions, ...options } : defaultOptions
 
 	let minimized = content
+
+	if (settings.removeDiffMarkers) {
+		minimized = removeDiffMarkersFromContent(minimized)
+	}
 
 	if (settings.removeLegacy) {
 		minimized = removeQuoteBlocks(minimized, 'LEGACY')
