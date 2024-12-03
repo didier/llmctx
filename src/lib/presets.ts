@@ -18,14 +18,14 @@ export type PresetConfig = {
 	prompt?: string
 	/** Minimization options for the content */
 	minimize?: MinimizeOptions
-	/** Estimated size of the content in KB */
-	estimatedSizeKb?: number
 }
+
+const SVELTE_5_PROMPT = 'Always use Svelte 5 runes and Svelte 5 syntax. Runes do not need to be imported, they are globals.'; 
 
 export const presets: Record<string, PresetConfig> = {
 	'svelte-complete': {
 		title: '⭐️ Svelte + SvelteKit (Recommended - Large preset)',
-		description: 'Complete Svelte + SvelteKit docs content excluding legacy docs',
+		description: 'Complete Svelte + SvelteKit docs excluding legacy, notes and migration docs',
 		owner: 'sveltejs',
 		repo: 'svelte.dev',
 		glob: [
@@ -34,7 +34,7 @@ export const presets: Record<string, PresetConfig> = {
 		],
 		ignore: [
 		],
-		prompt: 'Always use Svelte 5 runes. Runes do not need to be imported, they are globals.',
+		prompt: SVELTE_5_PROMPT,
 		minimize: {
 			removeLegacy: true,
 			removePlaygroundLinks: true,
@@ -46,7 +46,7 @@ export const presets: Record<string, PresetConfig> = {
 	},
 	'svelte-complete-small': {
 		title: '⭐️ Svelte + SvelteKit (Recommended - Small preset)',
-		description: 'Tutorial content and Svelte + Kit reference docs',
+		description: 'Tutorial content and Svelte + Kit reference docs, excluding legacy, notes and migration docs',
 		owner: 'sveltejs',
 		repo: 'svelte.dev',
 		glob: [
@@ -56,7 +56,7 @@ export const presets: Record<string, PresetConfig> = {
 		],
 		ignore: [
 		],
-		prompt: 'Always use Svelte 5 runes. Runes do not need to be imported, they are globals.',
+		prompt: SVELTE_5_PROMPT,
 		minimize: {
 			removeLegacy: true,
 			removePlaygroundLinks: true,
@@ -76,14 +76,14 @@ export const presets: Record<string, PresetConfig> = {
 		],
 		ignore: [
 		],
-		prompt: 'Always use Svelte 5 runes. Runes do not need to be imported, they are globals.',
+		prompt: SVELTE_5_PROMPT,
 		minimize: {
 			removeLegacy: true,
 			removePlaygroundLinks: true,
 			removeNoteBlocks: true,
 			removeDetailsBlocks: true,
 			removeHtmlComments: true,
-			 normalizeWhitespace: true
+			normalizeWhitespace: true
 		}
 	},
 	svelte: {
@@ -92,17 +92,17 @@ export const presets: Record<string, PresetConfig> = {
 		owner: 'sveltejs',
 		repo: 'svelte.dev',
 		glob: ['**/apps/svelte.dev/content/docs/svelte/**/*.md'],
-		ignore: ['**/apps/svelte.dev/content/docs/svelte/99-legacy/**/*.md'],
-		prompt: 'Always use Svelte 5 runes. Runes do not need to be imported, they are globals.',
-		estimatedSizeKb: 350,
-		minimize: {}
+		ignore: [],
+		prompt: SVELTE_5_PROMPT,
+		minimize: {},
 	},
 	sveltekit: {
 		title: 'SvelteKit (Full)',
+		description: 'Complete documentation including legacy and reference',
 		owner: 'sveltejs',
 		repo: 'svelte.dev',
+		prompt: SVELTE_5_PROMPT,
 		glob: ['**/apps/svelte.dev/content/docs/kit/**/*.md'],
-		estimatedSizeKb: 410,
 		minimize: {}
 	},
 	'svelte-cli': {
