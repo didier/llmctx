@@ -30,11 +30,14 @@ async function fetchMarkdownFiles({
 	}
 
 	// Fetch the tarball
+	const headers: HeadersInit = {
+		Accept: 'application/vnd.github.v3.raw'
+	}
+	if (GITHUB_TOKEN) {
+		headers['Authorization'] = `Bearer ${GITHUB_TOKEN}`
+	}
 	const response = await fetch(url, {
-		headers: {
-			Authorization: `Bearer ${GITHUB_TOKEN}`,
-			Accept: 'application/vnd.github.v3.raw'
-		}
+		headers
 	})
 
 	if (!response.ok) {
@@ -81,7 +84,19 @@ async function fetchMarkdownFiles({
 	})
 
 	// Create a readable stream from the response body
-	const tarballStream = Readable.from(response.body)
+	const tarballStream = response.body ? Readable.from(async function* () {
+	  if (!response.body) return;
+		const reader = response.body.getReader();
+		try {
+			while (true) {
+				const { done, value } = await reader.read();
+				if (done) return;
+				yield value;
+			}
+		} finally {
+			reader.releaseLock();
+		}
+	}()) : Readable.from(new Uint8Array())
 
 	// Create a gunzip stream
 	const gunzipStream = createGunzip()
@@ -100,7 +115,7 @@ async function fetchMarkdownFiles({
 	return contents
 }
 
-interface MinimizeOptions {
+export interface MinimizeOptions {
 	normalizeWhitespace: boolean
 	removeCodeBlocks: boolean
 	removeSquareBrackets: boolean
