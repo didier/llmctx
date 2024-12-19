@@ -26,7 +26,9 @@ export const presets: Record<string, PresetConfig> = {
 		minimize: {
 			removeCodeBlocks: false,
 			removeSquareBrackets: false,
-			removeParentheses: false
+			removeParentheses: false,
+			   normalizeWhitespace: true,
+			   trim: true
 		}
 	},
 	sveltekit: {
@@ -37,7 +39,9 @@ export const presets: Record<string, PresetConfig> = {
 		minimize: {
 			removeCodeBlocks: false,
 			removeSquareBrackets: false,
-			removeParentheses: false
+			removeParentheses: false,
+			   normalizeWhitespace: true,
+			   trim: true
 		}
 	},
 	'supabase-js': {
