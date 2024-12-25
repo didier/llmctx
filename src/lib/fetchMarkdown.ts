@@ -14,7 +14,7 @@ export async function fetchAndProcessMarkdown(preset: PresetConfig): Promise<str
 // Fetch markdown files directly from GitHub
 async function fetchMarkdownFiles({ owner, repo, glob }: PresetConfig): Promise<string[]> {
 	const contents: string[] = [];
-	const branch = (owner === 'sveltejs' && (repo === 'svelte' || repo === 'kit')) || (owner === 'huntabyte' && repo === 'shadcn-svelte') ? 'main' : 'master';
+	const branch = (owner === 'sveltejs' && (repo === 'svelte' || repo === 'kit')) || (owner === 'huntabyte' && repo === 'shadcn-svelte') || (owner === 'Effect-TS' && (repo === 'website' || repo === 'effect')) || (owner === 'instantdb' && repo === 'instant') || (owner === 'markjaquith' && repo === 'clerk-sveltekit') ? 'main' : 'master';
 	const apiUrl = `https://api.github.com/repos/${owner}/${repo}/git/trees/${branch}?recursive=1`;
 
 	try {

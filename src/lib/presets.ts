@@ -60,7 +60,7 @@ export const presets: Record<string, PresetConfig> = {
 		title: '@effect/schema',
 		owner: 'Effect-TS',
 		repo: 'effect',
-		glob: ['**/packages/schema/README.md'],
+		glob: ['packages/schema/README.md'],
 		prompt: 'All Schema functions are now denoted with uppercase (Struct, String, Number etc.)'
 	},
 	triplit: {

@@ -34,5 +34,10 @@
 {:else if error}
 	<p>Error: {error}</p>
 {:else}
-	<pre>{combinedContent}</pre>
+<pre class="reset-styles">{combinedContent}</pre>
 {/if}
+<style>
+.reset-styles, .reset-styles * {
+  all: revert;
+}	
+</style>
