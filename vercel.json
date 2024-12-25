@@ -1,10 +1,5 @@
 {
-	"crons": [
-		{
-			"path": "/api/trigger-rebuild",
-			"schedule": "0 0 * * *"
-		}
-	],
+	"crons": [],
 	"rewrites": [
 		{
 			"source": "/metrics/metrics.js",

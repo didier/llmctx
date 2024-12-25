@@ -32,23 +32,23 @@ export const presets: Record<string, PresetConfig> = {
 		}
 	},
 	sveltekit: {
-		title: 'SvelteKit',
-		owner: 'sveltejs',
-		repo: 'kit',
-		glob: ['**/documentation/docs/**/*.md'],
-		minimize: {
-			removeCodeBlocks: false,
-			removeSquareBrackets: false,
-			removeParentheses: false,
-			   normalizeWhitespace: true,
-			   trim: true
-		}
-	},
+			title: 'SvelteKit',
+			owner: 'sveltejs',
+			repo: 'kit',
+			glob: ['**/documentation/docs/**/*.md'],
+			minimize: {
+				removeCodeBlocks: false,
+				removeSquareBrackets: false,
+				removeParentheses: false,
+				normalizeWhitespace: true,
+				trim: true
+			}
+		},
 	'supabase-js': {
 		title: 'Supabase',
 		owner: 'supabase',
 		repo: 'supabase',
-		glob: ['**/apps/docs/spec/**/supabase_js_v2.{md,mdx,yaml,yml}']
+		glob: ['**/*.md']
 	},
 	effect: {
 		title: 'effect',
