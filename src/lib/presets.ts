@@ -83,7 +83,7 @@ export const presets: Record<string, PresetConfig> = {
 		repo: 'shadcn-svelte',
 		glob: ['**/sites/docs/src/content/**/*.md']
 	},
-	'Remult': {
+	'remult': {
 		title: 'Remult',
 		owner: 'remult',
 		repo: 'remult',
