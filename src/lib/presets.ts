@@ -82,5 +82,11 @@ export const presets: Record<string, PresetConfig> = {
 		owner: 'huntabyte',
 		repo: 'shadcn-svelte',
 		glob: ['**/sites/docs/src/content/**/*.md']
+	},
+	'remult': {
+		title: 'Remult',
+		owner: 'remult',
+		repo: 'remult',
+		glob: ['**/docs/docs/**/*.md']
 	}
 }
