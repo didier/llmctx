@@ -87,6 +87,6 @@ export const presets: Record<string, PresetConfig> = {
 		title: 'Remult',
 		owner: 'remult',
 		repo: 'remult',
-		glob: ['**/docs/**/*.md']
+		glob: ['**/docs/docs/**/*.md']
 	}
 }
