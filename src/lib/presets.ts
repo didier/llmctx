@@ -88,5 +88,11 @@ export const presets: Record<string, PresetConfig> = {
 		owner: 'remult',
 		repo: 'remult',
 		glob: ['**/docs/docs/**/*.md']
+	},
+	'better-auth': {
+		title: 'Better-Auth',
+		owner: 'better-auth',
+		repo: 'better-auth',
+		glob: ['**/docs/content/docs/**/*.md']
 	}
 }
