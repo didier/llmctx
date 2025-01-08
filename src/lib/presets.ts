@@ -88,5 +88,16 @@ export const presets: Record<string, PresetConfig> = {
 		owner: 'remult',
 		repo: 'remult',
 		glob: ['**/docs/docs/**/*.md']
+	},
+	'd3': {
+		title: 'D3',
+		owner: 'd3',
+		repo: 'd3',
+		glob: ['**/docs/**/*.md'],
+		minimize: {
+			removeCodeBlocks: false,
+			removeSquareBrackets: false,
+			removeParentheses: false
+		}
 	}
 }
