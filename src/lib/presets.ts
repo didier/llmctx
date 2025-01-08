@@ -26,25 +26,29 @@ export const presets: Record<string, PresetConfig> = {
 		minimize: {
 			removeCodeBlocks: false,
 			removeSquareBrackets: false,
-			removeParentheses: false
+			removeParentheses: false,
+			   normalizeWhitespace: true,
+			   trim: true
 		}
 	},
 	sveltekit: {
-		title: 'SvelteKit',
-		owner: 'sveltejs',
-		repo: 'kit',
-		glob: ['**/documentation/docs/**/*.md'],
-		minimize: {
-			removeCodeBlocks: false,
-			removeSquareBrackets: false,
-			removeParentheses: false
-		}
-	},
+			title: 'SvelteKit',
+			owner: 'sveltejs',
+			repo: 'kit',
+			glob: ['**/documentation/docs/**/*.md'],
+			minimize: {
+				removeCodeBlocks: false,
+				removeSquareBrackets: false,
+				removeParentheses: false,
+				normalizeWhitespace: true,
+				trim: true
+			}
+		},
 	'supabase-js': {
 		title: 'Supabase',
 		owner: 'supabase',
 		repo: 'supabase',
-		glob: ['**/apps/docs/spec/**/supabase_js_v2.{md,mdx,yaml,yml}']
+		glob: ['**/*.md']
 	},
 	effect: {
 		title: 'effect',
@@ -56,7 +60,7 @@ export const presets: Record<string, PresetConfig> = {
 		title: '@effect/schema',
 		owner: 'Effect-TS',
 		repo: 'effect',
-		glob: ['**/packages/schema/README.md'],
+		glob: ['packages/schema/README.md'],
 		prompt: 'All Schema functions are now denoted with uppercase (Struct, String, Number etc.)'
 	},
 	triplit: {

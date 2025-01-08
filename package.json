@@ -13,6 +13,7 @@
   },
   "devDependencies": {
     "@octokit/rest": "^21.0.2",
+    "@sveltejs/adapter-static": "^3.0.8",
     "@sveltejs/adapter-vercel": "^5.4.4",
     "@sveltejs/kit": "^2.6.2",
     "@sveltejs/vite-plugin-svelte": "^4.0.0-next.7",
